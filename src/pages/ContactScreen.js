@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
 import emailjs from "emailjs-com";
 
 const PageContainer = styled.div`
@@ -157,12 +157,6 @@ const ErrorMessage = styled.div`
   border: 1px solid #fb9038;
   border-radius: 4px;
   color: #e0e0e0;
-`;
-
-const ContactCard = styled(motion.div)`
-  background-color: rgba(26, 26, 26, 0.8);
-  border-radius: 12px;
-  padding: 20px;
 `;
 
 const ContactScreen = () => {
