@@ -39,6 +39,10 @@ const Header = styled.header`
   padding: 20px;
   position: relative;
   z-index: 1;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 const HeaderLeft = styled.div`
@@ -59,6 +63,10 @@ const NavLink = styled(motion.button)`
   cursor: pointer;
   padding: 5px 0;
   font-weight: 300;
+  &:focus {
+    outline: 2px solid #fb9038;
+    outline-offset: 2px;
+  }
 `;
 
 const ProfileSection = styled.div`
@@ -74,6 +82,10 @@ const ProfileImage = styled(motion.img)`
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #fb9038;
+  @media (max-width: 768px) {
+    width: 120px;
+    height: 120px;
+  }
 `;
 
 const ProfileName = styled.h1`
@@ -135,6 +147,9 @@ const SkillsPreview = styled(motion.div)`
   gap: 20px;
   margin-top: 20px;
   flex-wrap: wrap;
+  @media (max-width: 500px) {
+    gap: 15px;
+  }
 `;
 
 const SkillIcon = styled.div`
@@ -242,12 +257,30 @@ const SocialIcon = styled(motion.a)`
   cursor: pointer;
 `;
 
-function MainScreen() {
+const LoadingSpinner = styled(motion.div)`
+  border: 3px solid rgba(251, 144, 56, 0.3);
+  border-top: 3px solid #fb9038;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: auto;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const MainScreen = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [typedText, setTypedText] = useState("");
   const [showCursor, setShowCursor] = useState(true);
-  const fullText = "Hey There!!!";
-  const typingSpeed = 150;
 
   const imageControls = useAnimation();
   const descriptionControls = useAnimation();
@@ -256,6 +289,8 @@ function MainScreen() {
   const ctaControls = useAnimation();
 
   useEffect(() => {
+    const fullText = "Hey There!!!";
+    const typingSpeed = 100;
     let currentIndex = 0;
 
     // Start animations
@@ -299,6 +334,9 @@ function MainScreen() {
       setShowCursor((prev) => !prev);
     }, 500);
 
+    // Simulate loading time for animations
+    setTimeout(() => setIsLoading(false), 500);
+
     return () => {
       clearInterval(typingInterval);
       clearInterval(cursorInterval);
@@ -312,12 +350,28 @@ function MainScreen() {
   ]);
 
   const handleNavigation = (path) => {
-    navigate(path);
+    // Fade out current content
+    descriptionControls.start({ opacity: 0 });
+    skillsControls.start({ opacity: 0 });
+
+    // Wait for animation to complete before navigating
+    setTimeout(() => {
+      navigate(path);
+    }, 300);
   };
 
   const handleOpenResume = () => {
     window.open("/resume/Resume_Prateek Shetty.pdf", "_blank");
   };
+
+  if (isLoading) {
+    return (
+      <MainContainer>
+        <BackgroundImage />
+        <LoadingSpinner />
+      </MainContainer>
+    );
+  }
 
   return (
     <MainContainer>
@@ -472,6 +526,6 @@ function MainScreen() {
       </Footer>
     </MainContainer>
   );
-}
+};
 
 export default MainScreen;
