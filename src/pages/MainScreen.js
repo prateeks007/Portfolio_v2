@@ -137,6 +137,34 @@ const SkillsPreview = styled(motion.div)`
   flex-wrap: wrap;
 `;
 
+const SkillIcon = styled.div`
+  font-size: 24px;
+  color: #fb9038;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+`;
+
+const SkillTitle = styled.h4`
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: 400;
+  transition: transform 0.3s ease;
+`;
+
+const SkillDetails = styled.p`
+  font-size: 12px;
+  text-align: center;
+  color: #ccc;
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  padding: 0 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+`;
+
 const SkillCard = styled(motion.div)`
   background-color: rgba(26, 26, 26, 0.8);
   border-radius: 10px;
@@ -149,43 +177,20 @@ const SkillCard = styled(motion.div)`
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 
   &:hover {
     background-color: rgba(40, 40, 40, 0.9);
+
     .skill-details {
       opacity: 1;
       transform: translateY(0);
     }
+
+    ${SkillIcon}, ${SkillTitle} {
+      transform: translateY(-30px);
+    }
   }
-`;
-
-const SkillIcon = styled.div`
-  font-size: 24px;
-  color: #fb9038;
-  margin-bottom: 12px;
-`;
-
-const SkillTitle = styled.h4`
-  font-size: 16px;
-  margin-bottom: 8px;
-  font-weight: 400;
-`;
-
-const SkillDetails = styled.p`
-  font-size: 12px;
-  text-align: center;
-  color: #ccc;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(26, 26, 26, 0.95);
-  padding: 8px;
-  opacity: 0;
-  transform: translateY(100%);
-  transition: all 0.3s ease;
-  class="skill-details"
 `;
 
 const CTAContainer = styled.div`
@@ -342,7 +347,6 @@ function MainScreen() {
             alt="Prateek Shetty"
             initial={{ scale: 0.8 }}
             animate={imageControls}
-            whileHover={{ scale: 1.05 }}
           />
           <ProfileName>Prateek Shetty</ProfileName>
         </ProfileSection>
