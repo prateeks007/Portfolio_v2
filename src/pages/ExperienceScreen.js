@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
+import Timeline from "../components/Timeline";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -13,9 +14,7 @@ const BackgroundImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("/images/solid-color-image.jpeg");
-  background-size: cover;
-  background-position: center;
+  background-color: #000;
   z-index: 0;
 `;
 
@@ -37,15 +36,25 @@ const Header = styled.h1`
   font-weight: 100;
 `;
 
+const ExperienceContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 const ExperienceCard = styled(motion.div)`
-  background-color: rgba(40, 44, 52, 0.9);
+  background-color: rgba(26, 26, 26, 0.8);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.h2`
+const ExperienceHeader = styled.div`
+  margin-bottom: 15px;
+`;
+
+const ExperienceTitle = styled.h2`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 8px;
@@ -54,7 +63,7 @@ const Title = styled.h2`
   font-weight: 100;
 `;
 
-const Company = styled.h3`
+const ExperienceCompany = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 4px;
@@ -63,7 +72,7 @@ const Company = styled.h3`
   font-weight: 300;
 `;
 
-const Date = styled.p`
+const ExperienceDate = styled.p`
   font-size: 16px;
   color: #a0a0a0;
   margin-bottom: 12px;
@@ -71,18 +80,42 @@ const Date = styled.p`
   font-weight: 300;
 `;
 
-const Divider = styled.div`
-  height: 1px;
-  background-color: #fb9038;
-  margin: 12px 0;
+const ResponsibilitiesList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 `;
 
-const Responsibility = styled.p`
+const ResponsibilityItem = styled.li`
   font-size: 16px;
   margin-bottom: 8px;
   color: #d0d0d0;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
+  position: relative;
+  padding-left: 20px;
+
+  &:before {
+    content: "•";
+    color: #fb9038;
+    position: absolute;
+    left: 0;
+  }
+`;
+
+const SectionDivider = styled.div`
+  height: 1px;
+  background-color: rgba(251, 144, 56, 0.3);
+  margin: 40px 0;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 24px;
+  color: #fb9038;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
 `;
 
 const ExperienceScreen = () => {
@@ -136,28 +169,66 @@ const ExperienceScreen = () => {
     },
   ];
 
+  // Timeline data for the visual timeline
+  const timelineEvents = [
+    {
+      year: "2023",
+      title: "Junior DevOps Engineer",
+      organization: "EOX Vantage",
+      description: "Implementing security solutions and CI/CD pipelines",
+    },
+    {
+      year: "2023",
+      title: "Graduated",
+      organization: "PES University",
+      description: "B.Tech in Computer Science",
+    },
+    {
+      year: "2022",
+      title: "Software Developer Intern",
+      organization: "EOX Vantage",
+      description: "Worked with JavaScript, Ruby, and Ruby on Rails",
+    },
+    {
+      year: "2021",
+      title: "Summer Research Intern",
+      organization: "ISFCR, PES University",
+      description: "Worked on container security",
+    },
+  ];
+
   return (
     <PageContainer>
       <BackgroundImage />
       <ContentContainer>
         <Header>Experience</Header>
+        <ExperienceContainer
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+          transition={{ duration: 0.5 }}
+        >
+          {experiences.map((exp, index) => (
+            <ExperienceCard key={index}>
+              <ExperienceHeader>
+                <ExperienceTitle>{exp.title}</ExperienceTitle>
+                <ExperienceCompany>{exp.company}</ExperienceCompany>
+                <ExperienceDate>{exp.date}</ExperienceDate>
+              </ExperienceHeader>
+              <ResponsibilitiesList>
+                {exp.responsibilities.map((resp, respIndex) => (
+                  <ResponsibilityItem key={respIndex}>
+                    {resp}
+                  </ResponsibilityItem>
+                ))}
+              </ResponsibilitiesList>
+            </ExperienceCard>
+          ))}
+        </ExperienceContainer>
 
-        {experiences.map((exp, index) => (
-          <ExperienceCard
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={controls}
-            transition={{ delay: index * 0.2 }}
-          >
-            <Title>{exp.title}</Title>
-            <Company>{exp.company}</Company>
-            <Date>{exp.date}</Date>
-            <Divider />
-            {exp.responsibilities.map((resp, i) => (
-              <Responsibility key={i}>• {resp}</Responsibility>
-            ))}
-          </ExperienceCard>
-        ))}
+        <SectionDivider />
+
+        <SectionTitle>Career Timeline</SectionTitle>
+        <Timeline events={timelineEvents} />
       </ContentContainer>
     </PageContainer>
   );

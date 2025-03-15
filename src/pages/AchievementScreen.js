@@ -13,9 +13,7 @@ const BackgroundImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("/images/solid-color-image.jpeg");
-  background-size: cover;
-  background-position: center;
+  background-color: #000;
   z-index: 0;
 `;
 
@@ -46,7 +44,7 @@ const Header = styled.h1`
 `;
 
 const AchievementCard = styled(motion.div)`
-  background-color: rgba(40, 44, 52, 0.9);
+  background-color: rgba(26, 26, 26, 0.8);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 24px;

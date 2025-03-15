@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import {
+  FaPython,
   FaReact,
   FaNodeJs,
   FaHtml5,
@@ -9,20 +10,28 @@ import {
   FaDocker,
   FaGit,
   FaGithub,
+  FaJenkins,
+  FaAws,
+  FaBug,
+  FaShieldAlt,
+  FaSearch,
+  FaDatabase,
+  FaCode,
 } from "react-icons/fa";
 import {
-  SiKubernetes,
-  SiJenkins,
-  SiMysql,
-  SiPostgresql,
-  SiPython,
   SiJavascript,
   SiRuby,
+  SiKubernetes,
+  SiMysql,
+  SiPostgresql,
 } from "react-icons/si";
+import { MdSecurity, MdStorage } from "react-icons/md";
 
 const PageContainer = styled.div`
   min-height: 100vh;
   position: relative;
+  display: flex;
+  flex-direction: column;
 `;
 
 const BackgroundImage = styled.div`
@@ -31,9 +40,7 @@ const BackgroundImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("/images/solid-color-image.jpeg");
-  background-size: cover;
-  background-position: center;
+  background-color: #000;
   z-index: 0;
 `;
 
@@ -41,40 +48,47 @@ const ContentContainer = styled.div`
   position: relative;
   z-index: 1;
   padding: 16px;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
+  flex: 1;
 `;
 
 const Header = styled.h1`
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
   color: #fb9038;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-weight: 100;
 `;
 
 const CategoryContainer = styled(motion.div)`
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 `;
 
 const CategoryTitle = styled.h2`
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 24px;
   color: #e0e0e0;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
+  border-bottom: 1px solid rgba(251, 144, 56, 0.3);
+  padding-bottom: 8px;
+  text-align: center;
 `;
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 
-  @media (max-width: 600px) {
-    grid-template-columns: repeat(3, 1fr);
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -83,65 +97,187 @@ const SkillItem = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  background-color: rgba(40, 44, 52, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  svg {
+    font-size: 40px;
+    margin-bottom: 12px;
+    color: ${(props) => props.iconColor || "#fb9038"};
+  }
 `;
 
-const SkillName = styled.span`
-  margin-top: 8px;
-  font-size: 12px;
-  color: #ffffff;
+const SkillName = styled.p`
+  font-size: 16px;
+  color: #e0e0e0;
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
+  margin-bottom: 10px;
+`;
+
+const ProgressBar = styled.div`
+  width: 100%;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+`;
+
+const ProgressFill = styled(motion.div)`
+  height: 100%;
+  background-color: #fb9038;
+  border-radius: 3px;
 `;
 
 const SkillScreen = () => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start("visible");
+  }, [controls]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+      },
+    },
+  };
+
   const skillCategories = [
     {
       category: "Programming Languages",
       skills: [
-        { name: "Python", icon: <SiPython size={40} color="#3776AB" /> },
+        { name: "Python", icon: <FaPython color="#3776AB" />, proficiency: 80 },
         {
           name: "JavaScript",
-          icon: <SiJavascript size={40} color="#F7DF1E" />,
+          icon: <SiJavascript color="#F7DF1E" />,
+          proficiency: 50,
         },
-        { name: "Ruby", icon: <SiRuby size={40} color="#CC342D" /> },
+        { name: "Ruby", icon: <SiRuby color="#CC342D" />, proficiency: 20 },
       ],
     },
     {
       category: "Web Technologies",
       skills: [
-        { name: "React", icon: <FaReact size={40} color="#61DAFB" /> },
-        { name: "Node.js", icon: <FaNodeJs size={40} color="#339933" /> },
-        { name: "HTML5", icon: <FaHtml5 size={40} color="#E34F26" /> },
-        { name: "CSS3", icon: <FaCss3Alt size={40} color="#1572B6" /> },
+        { name: "React", icon: <FaReact color="#61DAFB" />, proficiency: 45 },
+        {
+          name: "Node.js",
+          icon: <FaNodeJs color="#339933" />,
+          proficiency: 55,
+        },
+        { name: "HTML5", icon: <FaHtml5 color="#E34F26" />, proficiency: 60 },
+        { name: "CSS3", icon: <FaCss3Alt color="#1572B6" />, proficiency: 55 },
       ],
     },
     {
       category: "DevOps & Cloud",
       skills: [
-        { name: "Docker", icon: <FaDocker size={40} color="#2496ED" /> },
+        { name: "Docker", icon: <FaDocker color="#2496ED" />, proficiency: 90 },
         {
           name: "Kubernetes",
-          icon: <SiKubernetes size={40} color="#326CE5" />,
+          icon: <SiKubernetes color="#326CE5" />,
+          proficiency: 90,
         },
-        { name: "Jenkins", icon: <SiJenkins size={40} color="#D24939" /> },
-        { name: "Git", icon: <FaGit size={40} color="#F05032" /> },
+        {
+          name: "Jenkins",
+          icon: <FaJenkins color="#D24939" />,
+          proficiency: 70,
+        },
+        { name: "Git", icon: <FaGit color="#F05032" />, proficiency: 95 },
         {
           name: "GitHub Actions",
-          icon: <FaGithub size={40} color="#2088FF" />,
+          icon: <FaGithub color="#ffffff" />,
+          proficiency: 90,
+        },
+        {
+          name: "AWS",
+          icon: <FaAws color="#FF9900" />,
+          proficiency: 75,
+        },
+        {
+          name: "Elasticsearch",
+          icon: <MdStorage color="#005571" />,
+          proficiency: 85,
         },
       ],
     },
     {
       category: "Databases",
       skills: [
-        { name: "MySQL", icon: <SiMysql size={40} color="#4479A1" /> },
+        { name: "MySQL", icon: <SiMysql color="#4479A1" />, proficiency: 75 },
         {
           name: "PostgreSQL",
-          icon: <SiPostgresql size={40} color="#336791" />,
+          icon: <SiPostgresql color="#336791" />,
+          proficiency: 70,
+        },
+      ],
+    },
+    {
+      category: "Security",
+      skills: [
+        {
+          name: "Wazuh (SIEM)",
+          icon: <MdSecurity color="#1A73E8" />,
+          proficiency: 85,
+        },
+        {
+          name: "OWASP ZAP",
+          icon: <FaShieldAlt color="#5B69BC" />,
+          proficiency: 80,
+        },
+        {
+          name: "Burp Suite",
+          icon: <FaBug color="#FF6633" />,
+          proficiency: 75,
+        },
+        {
+          name: "Metasploit",
+          icon: <FaCode color="#2A6478" />,
+          proficiency: 70,
+        },
+        {
+          name: "sqlmap",
+          icon: <FaDatabase color="#4479A1" />,
+          proficiency: 80,
+        },
+        {
+          name: "Penetration Testing",
+          icon: <FaShieldAlt color="#E34F26" />,
+          proficiency: 85,
+        },
+        {
+          name: "Snyk",
+          icon: <FaShieldAlt color="#4C4A73" />,
+          proficiency: 75,
+        },
+        {
+          name: "Semgrep",
+          icon: <FaCode color="#47A248" />,
+          proficiency: 70,
+        },
+        {
+          name: "Faraday",
+          icon: <FaSearch color="#00A4EF" />,
+          proficiency: 65,
         },
       ],
     },
@@ -153,30 +289,40 @@ const SkillScreen = () => {
       <ContentContainer>
         <Header>Skills & Technologies</Header>
 
-        {skillCategories.map((category, categoryIndex) => (
-          <CategoryContainer
-            key={categoryIndex}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: categoryIndex * 0.2 }}
-          >
-            <CategoryTitle>{category.category}</CategoryTitle>
-            <SkillsGrid>
-              {category.skills.map((skill, skillIndex) => (
-                <SkillItem
-                  key={skillIndex}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: categoryIndex * 0.2 + skillIndex * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                >
-                  {skill.icon}
-                  <SkillName>{skill.name}</SkillName>
-                </SkillItem>
-              ))}
-            </SkillsGrid>
-          </CategoryContainer>
-        ))}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+        >
+          {skillCategories.map((category, categoryIndex) => (
+            <CategoryContainer key={categoryIndex} variants={itemVariants}>
+              <CategoryTitle>{category.category}</CategoryTitle>
+              <SkillsGrid>
+                {category.skills.map((skill, skillIndex) => (
+                  <SkillItem
+                    key={skillIndex}
+                    variants={itemVariants}
+                    whileHover={{
+                      scale: 1.05,
+                      transition: { type: "spring", stiffness: 300 },
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {skill.icon}
+                    <SkillName>{skill.name}</SkillName>
+                    <ProgressBar>
+                      <ProgressFill
+                        initial={{ width: 0 }}
+                        animate={{ width: `${skill.proficiency}%` }}
+                        transition={{ delay: 0.5, duration: 1 }}
+                      />
+                    </ProgressBar>
+                  </SkillItem>
+                ))}
+              </SkillsGrid>
+            </CategoryContainer>
+          ))}
+        </motion.div>
       </ContentContainer>
     </PageContainer>
   );

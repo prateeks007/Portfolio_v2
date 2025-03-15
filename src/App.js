@@ -4,6 +4,7 @@ import MainScreen from "./pages/MainScreen";
 import SkillScreen from "./pages/SkillScreen";
 import AchievementScreen from "./pages/AchievementScreen";
 import ExperienceScreen from "./pages/ExperienceScreen";
+import ContactScreen from "./pages/ContactScreen";
 import Popup from "./components/Popup";
 import { GlobalFonts } from "./utils/fontLoader";
 import "./App.css";
@@ -21,6 +22,7 @@ function App() {
           <Route path="/skills" element={<SkillScreen />} />
           <Route path="/achievements" element={<AchievementScreen />} />
           <Route path="/experience" element={<ExperienceScreen />} />
+          <Route path="/contact" element={<ContactScreen />} />
         </Routes>
       </Router>
 
