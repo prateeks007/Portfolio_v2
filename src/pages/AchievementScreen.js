@@ -106,16 +106,6 @@ const AchievementContainer = styled(motion.div)`
   gap: 20px;
 `;
 
-const CategoryTitle = styled.h2`
-  font-size: 24px;
-  color: ${(props) => props.theme.text};
-  margin: 40px 0 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid ${(props) => props.theme.border};
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-`;
-
 const Badge = styled.span`
   background-color: ${(props) => props.theme.secondaryBackground};
   color: ${(props) => props.theme.text};

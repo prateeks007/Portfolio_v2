@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import Mainscreen from "./pages/MainScreen";
+import { motion, AnimatePresence } from "framer-motion";
+import MainScreen from "./pages/MainScreen";
 import SkillScreen from "./pages/SkillScreen";
 import AchievementScreen from "./pages/AchievementScreen";
 import ExperienceScreen from "./pages/ExperienceScreen";
@@ -39,43 +45,147 @@ const darkTheme = {
   shadow: "rgba(0, 0, 0, 0.3)",
 };
 
-function App() {
-  const [isPopupVisible, setIsPopupVisible] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem("theme");
-    return savedTheme ? savedTheme === "dark" : true;
-  });
+const pageTransition = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.6, -0.05, 0.01, 0.99],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.4,
+      ease: [0.6, -0.05, 0.01, 0.99],
+    },
+  },
+};
 
-  const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-    localStorage.setItem("theme", newTheme ? "dark" : "light");
-  };
-
-  const theme = isDarkMode ? darkTheme : lightTheme;
+function AnimatedRoutes() {
+  const location = useLocation();
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className="app-container">
-        <GlobalFonts />
-        <Router>
-          <ScrollProgress />
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Mainscreen />} />
-              <Route path="/skills" element={<SkillScreen />} />
-              <Route path="/achievements" element={<AchievementScreen />} />
-              <Route path="/experience" element={<ExperienceScreen />} />
-              <Route path="/contact" element={<ContactScreen />} />
-            </Routes>
-          </Layout>
-          <ThemeToggle isDark={isDarkMode} toggleTheme={toggleTheme} />
-          <ScrollToTop />
-        </Router>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <motion.div
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageTransition}
+              >
+                <MainScreen />
+              </motion.div>
+            </Layout>
+          }
+        />
+        <Route
+          path="/skills"
+          element={
+            <Layout>
+              <motion.div
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageTransition}
+              >
+                <SkillScreen />
+              </motion.div>
+            </Layout>
+          }
+        />
+        <Route
+          path="/experience"
+          element={
+            <Layout>
+              <motion.div
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageTransition}
+              >
+                <ExperienceScreen />
+              </motion.div>
+            </Layout>
+          }
+        />
+        <Route
+          path="/achievements"
+          element={
+            <Layout>
+              <motion.div
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageTransition}
+              >
+                <AchievementScreen />
+              </motion.div>
+            </Layout>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <Layout>
+              <motion.div
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageTransition}
+              >
+                <ContactScreen />
+              </motion.div>
+            </Layout>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+}
 
-        {isPopupVisible && <Popup onClose={() => setIsPopupVisible(false)} />}
-      </div>
-    </ThemeProvider>
+function App() {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isPopupVisible, setIsPopupVisible] = useState(true);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  return (
+    <Router>
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <motion.div
+          className="app-container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <GlobalFonts />
+          <ScrollToTop />
+          <ThemeToggle isDark={isDarkMode} toggleTheme={toggleTheme} />
+          <ScrollProgress />
+          <AnimatedRoutes />
+          {isPopupVisible && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Popup onClose={() => setIsPopupVisible(false)} />
+            </motion.div>
+          )}
+        </motion.div>
+      </ThemeProvider>
+    </Router>
   );
 }
 

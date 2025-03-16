@@ -29,13 +29,29 @@ const BackgroundImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: ${(props) => props.theme.background};
   background: linear-gradient(
-    135deg,
-    ${(props) => props.theme.secondaryBackground} 0%,
+    45deg,
+    ${(props) => props.theme.background} 0%,
+    ${(props) => `${props.theme.primary}30`} 25%,
+    ${(props) => props.theme.background} 50%,
+    ${(props) => `${props.theme.primary}30`} 75%,
     ${(props) => props.theme.background} 100%
   );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
   z-index: -1;
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 `;
 
 const Header = styled.header`
