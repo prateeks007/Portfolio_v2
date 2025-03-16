@@ -132,6 +132,13 @@ const AchievementScreen = () => {
 
   const achievements = [
     {
+      title: "Outstanding Performer",
+      organization: "EOX Vantage",
+      date: "OCT 2024",
+      description:
+        "Won the Outstanding Performer Award at EOX Vantage for my contributions to the team.",
+    },
+    {
       title: "Winner of NetApp Hackathon",
       organization: "PES University",
       date: "OCT 2022",
