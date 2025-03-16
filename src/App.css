@@ -58,3 +58,14 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/* Add padding for pages with header */
+.page-container {
+  min-height: 100vh;
+  padding-top: 80px; /* Match header height */
+}
+
+/* Main screen doesn't need padding */
+.main-screen {
+  padding-top: 0;
+}

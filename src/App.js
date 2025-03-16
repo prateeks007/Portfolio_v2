@@ -5,6 +5,7 @@ import SkillScreen from "./pages/SkillScreen";
 import AchievementScreen from "./pages/AchievementScreen";
 import ExperienceScreen from "./pages/ExperienceScreen";
 import ContactScreen from "./pages/ContactScreen";
+import Layout from "./components/Layout";
 import Popup from "./components/Popup";
 import { GlobalFonts } from "./utils/fontLoader";
 import "./App.css";
@@ -17,13 +18,15 @@ function App() {
     <div className="app-container">
       <GlobalFonts />
       <Router>
-        <Routes>
-          <Route path="/" element={<MainScreen />} />
-          <Route path="/skills" element={<SkillScreen />} />
-          <Route path="/achievements" element={<AchievementScreen />} />
-          <Route path="/experience" element={<ExperienceScreen />} />
-          <Route path="/contact" element={<ContactScreen />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<MainScreen />} />
+            <Route path="/skills" element={<SkillScreen />} />
+            <Route path="/achievements" element={<AchievementScreen />} />
+            <Route path="/experience" element={<ExperienceScreen />} />
+            <Route path="/contact" element={<ContactScreen />} />
+          </Routes>
+        </Layout>
       </Router>
 
       {/* Conditionally render the popup */}

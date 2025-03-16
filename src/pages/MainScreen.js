@@ -17,9 +17,10 @@ const MainContainer = styled.div`
   background-color: #000;
   color: white;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  padding-bottom: 60px;
 `;
 
 const BackgroundImage = styled.div`
@@ -77,14 +78,14 @@ const ProfileSection = styled.div`
 `;
 
 const ProfileImage = styled(motion.img)`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #fb9038;
   @media (max-width: 768px) {
-    width: 120px;
-    height: 120px;
+    width: 170px;
+    height: 170px;
   }
 `;
 
@@ -100,7 +101,7 @@ const ContentSection = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 20px;
+  padding: 10px 20px 20px;
   text-align: center;
   max-width: 800px;
   margin: 0 auto;
@@ -120,9 +121,9 @@ const IntroText = styled(motion.h3)`
 `;
 
 const DescriptionText = styled(motion.p)`
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 15px;
   font-weight: 300;
   max-width: 600px;
 `;
@@ -145,7 +146,8 @@ const SkillsPreview = styled(motion.div)`
   display: flex;
   justify-content: center;
   gap: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
   @media (max-width: 500px) {
     gap: 15px;
@@ -184,8 +186,8 @@ const SkillCard = styled(motion.div)`
   background-color: rgba(26, 26, 26, 0.8);
   border-radius: 10px;
   padding: 15px;
-  width: 150px;
-  height: 150px;
+  width: 130px;
+  height: 130px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -211,9 +213,10 @@ const SkillCard = styled(motion.div)`
 const CTAContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding: 20px 0;
+  padding: 10px 0;
   width: 100%;
   z-index: 1;
+  margin-bottom: 10px;
 `;
 
 const CTAButton = styled(motion.button)`
@@ -244,10 +247,11 @@ const Footer = styled.footer`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.7);
   padding: 20px 0;
-  position: relative;
-  z-index: 1;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
   width: 100%;
-  margin-top: auto;
 `;
 
 const SocialIcon = styled(motion.a)`
@@ -289,7 +293,7 @@ const MainScreen = () => {
   const ctaControls = useAnimation();
 
   useEffect(() => {
-    const fullText = "Hey There!!!";
+    const fullText = "Hello There!!!";
     const typingSpeed = 100;
     let currentIndex = 0;
 
@@ -361,7 +365,10 @@ const MainScreen = () => {
   };
 
   const handleOpenResume = () => {
-    window.open("/resume/Resume_Prateek Shetty.pdf", "_blank");
+    window.open(
+      process.env.PUBLIC_URL + "/resume/Resume_Prateek Shetty.pdf",
+      "_blank"
+    );
   };
 
   if (isLoading) {
@@ -397,7 +404,7 @@ const MainScreen = () => {
 
         <ProfileSection>
           <ProfileImage
-            src="/images/self_profile_image.jpg"
+            src={process.env.PUBLIC_URL + "/images/self_profile_image.jpg"}
             alt="Prateek Shetty"
             initial={{ scale: 0.8 }}
             animate={imageControls}
@@ -456,7 +463,7 @@ const MainScreen = () => {
             </SkillIcon>
             <SkillTitle>Development</SkillTitle>
             <SkillDetails className="skill-details">
-              JavaScript, React, Node.js, Python, Java, C++
+              JavaScript, React, Node.js, Python
             </SkillDetails>
           </SkillCard>
 
@@ -469,7 +476,7 @@ const MainScreen = () => {
             </SkillIcon>
             <SkillTitle>DevOps</SkillTitle>
             <SkillDetails className="skill-details">
-              Docker, Kubernetes, AWS, CI/CD, Jenkins, Terraform
+              Docker, Kubernetes, AWS
             </SkillDetails>
           </SkillCard>
 
