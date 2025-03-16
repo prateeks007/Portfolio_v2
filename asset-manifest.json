@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/Portfolio_v2/static/css/main.c8270b48.css",
-    "main.js": "/Portfolio_v2/static/js/main.b5e5681b.js",
+    "main.css": "/Portfolio_v2/static/css/main.7f723529.css",
+    "main.js": "/Portfolio_v2/static/js/main.ed325f6f.js",
     "static/js/453.1407b060.chunk.js": "/Portfolio_v2/static/js/453.1407b060.chunk.js",
     "static/media/BeautifulPeoplePersonalUse-dE0g.ttf": "/Portfolio_v2/static/media/BeautifulPeoplePersonalUse-dE0g.17efd45acf38dcea2253.ttf",
     "static/media/Roboto-Thin.ttf": "/Portfolio_v2/static/media/Roboto-Thin.a732a12eb07742232407.ttf",
     "static/media/Roboto-Light.ttf": "/Portfolio_v2/static/media/Roboto-Light.333da16a3f3cc391d087.ttf",
     "static/media/Merriweather-LightItalic.ttf": "/Portfolio_v2/static/media/Merriweather-LightItalic.7156ba6851d2a94064dd.ttf",
     "index.html": "/Portfolio_v2/index.html",
-    "main.c8270b48.css.map": "/Portfolio_v2/static/css/main.c8270b48.css.map",
-    "main.b5e5681b.js.map": "/Portfolio_v2/static/js/main.b5e5681b.js.map",
+    "main.7f723529.css.map": "/Portfolio_v2/static/css/main.7f723529.css.map",
+    "main.ed325f6f.js.map": "/Portfolio_v2/static/js/main.ed325f6f.js.map",
     "453.1407b060.chunk.js.map": "/Portfolio_v2/static/js/453.1407b060.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c8270b48.css",
-    "static/js/main.b5e5681b.js"
+    "static/css/main.7f723529.css",
+    "static/js/main.ed325f6f.js"
   ]
 }
