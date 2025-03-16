@@ -6,6 +6,7 @@ import Timeline from "../components/Timeline";
 const PageContainer = styled.div`
   min-height: 100vh;
   position: relative;
+  background-color: ${(props) => props.theme.background};
 `;
 
 const BackgroundImage = styled.div`
@@ -14,7 +15,12 @@ const BackgroundImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #000;
+  background: ${(props) => props.theme.background};
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.theme.secondaryBackground} 0%,
+    ${(props) => props.theme.background} 100%
+  );
   z-index: 0;
 `;
 
@@ -27,10 +33,10 @@ const ContentContainer = styled.div`
 `;
 
 const Header = styled.h1`
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
-  color: #fb9038;
-  margin-bottom: 24px;
+  color: ${(props) => props.theme.primary};
+  margin-bottom: 40px;
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-weight: 100;
@@ -42,12 +48,17 @@ const ExperienceContainer = styled(motion.div)`
   gap: 20px;
 `;
 
-const ExperienceCard = styled(motion.div)`
-  background-color: rgba(26, 26, 26, 0.8);
-  border-radius: 12px;
+const ExperienceCard = styled.div`
+  background-color: ${(props) => props.theme.cardBackground};
+  border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px ${(props) => props.theme.shadow};
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 `;
 
 const ExperienceHeader = styled.div`
@@ -58,7 +69,7 @@ const ExperienceTitle = styled.h2`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 8px;
-  color: #fb9038;
+  color: ${(props) => props.theme.primary};
   font-family: "Roboto", sans-serif;
   font-weight: 100;
 `;
@@ -67,14 +78,14 @@ const ExperienceCompany = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 4px;
-  color: #e0e0e0;
+  color: ${(props) => props.theme.text};
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 `;
 
 const ExperienceDate = styled.p`
   font-size: 16px;
-  color: #a0a0a0;
+  color: ${(props) => props.theme.cardText};
   margin-bottom: 12px;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
@@ -89,7 +100,7 @@ const ResponsibilitiesList = styled.ul`
 const ResponsibilityItem = styled.li`
   font-size: 16px;
   margin-bottom: 8px;
-  color: #d0d0d0;
+  color: ${(props) => props.theme.cardText};
   font-family: "Roboto", sans-serif;
   font-weight: 300;
   position: relative;
@@ -97,7 +108,7 @@ const ResponsibilityItem = styled.li`
 
   &:before {
     content: "•";
-    color: #fb9038;
+    color: ${(props) => props.theme.primary};
     position: absolute;
     left: 0;
   }
@@ -105,13 +116,13 @@ const ResponsibilityItem = styled.li`
 
 const SectionDivider = styled.div`
   height: 1px;
-  background-color: rgba(251, 144, 56, 0.3);
+  background-color: ${(props) => props.theme.border};
   margin: 40px 0;
 `;
 
 const SectionTitle = styled.h2`
   font-size: 24px;
-  color: #fb9038;
+  color: ${(props) => props.theme.primary};
   margin-bottom: 20px;
   text-align: center;
   font-family: "Roboto", sans-serif;

@@ -15,6 +15,7 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: ${(props) => props.theme.background};
 `;
 
 const BackgroundImage = styled.div`
@@ -23,7 +24,12 @@ const BackgroundImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+  background: ${(props) => props.theme.background};
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.theme.secondaryBackground} 0%,
+    ${(props) => props.theme.background} 100%
+  );
   z-index: 0;
 `;
 
@@ -51,29 +57,14 @@ const ContentContainer = styled.div`
   width: 100%;
 `;
 
-const Header = styled(motion.h1)`
-  font-size: 42px;
-  color: #fb9038;
+const Header = styled.h1`
+  font-size: 32px;
+  font-weight: bold;
+  color: ${(props) => props.theme.primary};
   margin-bottom: 40px;
   text-align: center;
-  font-weight: 300;
-  position: relative;
-
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(
-      90deg,
-      rgba(251, 144, 56, 0) 0%,
-      rgba(251, 144, 56, 1) 50%,
-      rgba(251, 144, 56, 0) 100%
-    );
-  }
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
 `;
 
 const ContactWrapper = styled(motion.div)`
@@ -89,20 +80,20 @@ const ContactWrapper = styled(motion.div)`
 
 const ContactInfo = styled(motion.div)`
   flex: 1;
-  background-color: rgba(40, 44, 52, 0.8);
+  background-color: ${(props) => props.theme.cardBackground};
   border-radius: 12px;
   padding: 30px;
   display: flex;
   flex-direction: column;
   gap: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px ${(props) => props.theme.shadow};
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(251, 144, 56, 0.1);
+  border: 1px solid ${(props) => props.theme.border};
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 35px ${(props) => props.theme.shadow};
   }
 `;
 
@@ -110,17 +101,17 @@ const ContactInfoItem = styled(motion.div)`
   display: flex;
   align-items: center;
   gap: 15px;
-  color: #e0e0e0;
+  color: ${(props) => props.theme.text};
   padding: 10px;
   border-radius: 8px;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: rgba(251, 144, 56, 0.1);
+    background-color: ${(props) => props.theme.secondaryBackground};
   }
 
   svg {
-    color: #fb9038;
+    color: ${(props) => props.theme.primary};
     font-size: 24px;
   }
 
@@ -154,137 +145,98 @@ const SocialIcon = styled(motion.a)`
   }
 `;
 
-const ContactForm = styled(motion.form)`
-  flex: 2;
-  background-color: rgba(40, 44, 52, 0.8);
-  border-radius: 12px;
+const ContactForm = styled.form`
+  background-color: ${(props) => props.theme.cardBackground};
   padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(251, 144, 56, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px ${(props) => props.theme.shadow};
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 `;
 
-const FormGroup = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+const FormGroup = styled.div`
+  margin-bottom: 25px;
+  width: 100%;
 `;
 
 const Label = styled.label`
-  color: #e0e0e0;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  svg {
-    color: #fb9038;
-    font-size: 16px;
-  }
+  display: block;
+  margin-bottom: 8px;
+  color: ${(props) => props.theme.text};
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 `;
 
-const Input = styled(motion.input)`
-  padding: 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(251, 144, 56, 0.3);
-  background-color: rgba(30, 33, 39, 0.8);
-  color: #e0e0e0;
+const Input = styled.input`
+  width: 100%;
+  padding: 12px;
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.secondaryBackground};
+  color: ${(props) => props.theme.text};
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
   font-size: 16px;
-  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #fb9038;
-    box-shadow: 0 0 0 3px rgba(251, 144, 56, 0.2);
+    border-color: ${(props) => props.theme.primary};
   }
 `;
 
-const TextArea = styled(motion.textarea)`
-  padding: 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(251, 144, 56, 0.3);
-  background-color: rgba(30, 33, 39, 0.8);
-  color: #e0e0e0;
-  font-size: 16px;
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.secondaryBackground};
+  color: ${(props) => props.theme.text};
+  min-height: 200px;
   resize: vertical;
-  min-height: 150px;
-  transition: all 0.3s ease;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.5;
 
   &:focus {
     outline: none;
-    border-color: #fb9038;
-    box-shadow: 0 0 0 3px rgba(251, 144, 56, 0.2);
+    border-color: ${(props) => props.theme.primary};
   }
 `;
 
-const SubmitButton = styled(motion.button)`
-  padding: 14px 28px;
-  background-color: #fb9038;
-  color: #000;
+const SubmitButton = styled.button`
+  background-color: ${(props) => props.theme.primary};
+  color: #ffffff;
+  padding: 12px 24px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 5px;
   cursor: pointer;
-  align-self: flex-start;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  overflow: hidden;
-  position: relative;
+  font-size: 16px;
+  transition: background-color 0.2s;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transition: 0.5s;
-  }
-
-  &:hover:after {
-    left: 100%;
-  }
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+  &:hover {
+    background-color: ${(props) => props.theme.primaryHover};
   }
 `;
 
-const SuccessMessage = styled(motion.div)`
-  margin-top: 20px;
-  padding: 15px;
-  background-color: rgba(39, 174, 96, 0.2);
-  border: 1px solid #27ae60;
-  border-radius: 8px;
-  color: #e0e0e0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+const ErrorMessage = styled.p`
+  color: #ff4444;
+  margin-top: 5px;
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 `;
 
-const ErrorMessage = styled(motion.div)`
+const SuccessMessage = styled.p`
+  color: #00c853;
+  text-align: center;
   margin-top: 20px;
-  padding: 15px;
-  background-color: rgba(231, 76, 60, 0.2);
-  border: 1px solid #e74c3c;
-  border-radius: 8px;
-  color: #e0e0e0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 `;
 
 const ContactScreen = () => {

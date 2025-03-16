@@ -5,6 +5,7 @@ import { motion, useAnimation } from "framer-motion";
 const PageContainer = styled.div`
   min-height: 100vh;
   position: relative;
+  background-color: ${(props) => props.theme.background};
 `;
 
 const BackgroundImage = styled.div`
@@ -13,7 +14,12 @@ const BackgroundImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #000;
+  background: ${(props) => props.theme.background};
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.theme.secondaryBackground} 0%,
+    ${(props) => props.theme.background} 100%
+  );
   z-index: 0;
 `;
 
@@ -23,62 +29,108 @@ const ContentContainer = styled.div`
   padding: 16px;
   max-width: 800px;
   margin: 0 auto;
-
-  @media (min-width: 600px) {
-    padding: 24px;
-  }
 `;
 
 const Header = styled.h1`
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
-  color: #fb9038;
-  margin-bottom: 28px;
+  color: ${(props) => props.theme.primary};
+  margin-bottom: 40px;
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-weight: 100;
-
-  @media (min-width: 600px) {
-    font-size: 32px;
-  }
 `;
 
 const AchievementCard = styled(motion.div)`
-  background-color: rgba(26, 26, 26, 0.8);
-  border-radius: 16px;
+  background-color: ${(props) => props.theme.cardBackground};
+  border-radius: 10px;
   padding: 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px ${(props) => props.theme.shadow};
+  transition: transform 0.2s;
 
-  @media (min-width: 600px) {
-    padding: 24px;
+  &:hover {
+    transform: translateY(-5px);
   }
 `;
 
-const Date = styled.h3`
-  font-size: 16px;
-  font-weight: bold;
-  color: #fb9038;
-  margin-bottom: 12px;
+const Title = styled.h2`
+  font-size: 24px;
+  color: ${(props) => props.theme.primary};
+  margin-bottom: 10px;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
-
-  @media (min-width: 600px) {
-    font-size: 18px;
-  }
 `;
 
-const AchievementText = styled.p`
+const Organization = styled.h3`
   font-size: 18px;
-  color: #e0e0e0;
+  color: ${(props) => props.theme.text};
+  margin-bottom: 10px;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
-  line-height: 26px;
+`;
 
-  @media (min-width: 600px) {
-    font-size: 20px;
-    line-height: 28px;
+const Date = styled.p`
+  font-size: 14px;
+  color: ${(props) => props.theme.cardText};
+  margin-bottom: 15px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+`;
+
+const Description = styled.p`
+  font-size: 16px;
+  color: ${(props) => props.theme.cardText};
+  line-height: 1.6;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+`;
+
+const CertificateLink = styled.a`
+  display: inline-block;
+  margin-top: 10px;
+  color: ${(props) => props.theme.primary};
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: ${(props) => props.theme.primaryHover};
+    text-decoration: underline;
   }
+`;
+
+const AchievementContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const CategoryTitle = styled.h2`
+  font-size: 24px;
+  color: ${(props) => props.theme.text};
+  margin: 40px 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid ${(props) => props.theme.border};
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+`;
+
+const Badge = styled.span`
+  background-color: ${(props) => props.theme.secondaryBackground};
+  color: ${(props) => props.theme.text};
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  display: inline-block;
+`;
+
+const BadgeContainer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const AchievementScreen = () => {
@@ -90,41 +142,57 @@ const AchievementScreen = () => {
 
   const achievements = [
     {
-      achievement: "Winner of NetApp Hackathon from PES University.",
+      title: "Winner of NetApp Hackathon",
+      organization: "PES University",
       date: "OCT 2022",
+      description: "Winner of NetApp Hackathon from PES University.",
     },
     {
-      achievement:
-        "One of the top 400 winners in Meta Global Hackathon out of 3000+ participants.",
+      title: "Meta Global Hackathon Top 400",
+      organization: "Meta",
       date: "SEP 2022",
+      description:
+        "One of the top 400 winners in Meta Global Hackathon out of 3000+ participants.",
     },
     {
-      achievement:
-        "Qualified for the prototyping round of Zoho Creator Build an App Challenge on Hackerearth.",
+      title: "Zoho Creator Challenge Qualifier",
+      organization: "Hackerearth",
       date: "AUG 2022",
+      description:
+        "Qualified for the prototyping round of Zoho Creator Build an App Challenge on Hackerearth.",
     },
     {
-      achievement: "Cleared the qualification round of Google Code Jam.",
+      title: "Google Code Jam Qualifier",
+      organization: "Google",
       date: "APR 2022",
+      description: "Cleared the qualification round of Google Code Jam.",
     },
     {
-      achievement:
-        "Global Rank: 157 in February Long 2022 - II, Division 3 on Codechef.",
+      title: "Codechef Global Rank 157",
+      organization: "Codechef",
       date: "FEB 2022",
+      description:
+        "Global Rank: 157 in February Long 2022 - II, Division 3 on Codechef.",
     },
     {
-      achievement: "Successfully completed Hacktoberfest 2020.",
+      title: "Hacktoberfest 2020",
+      organization: "Digital Ocean",
       date: "OCT 2020",
+      description: "Successfully completed Hacktoberfest 2020.",
     },
     {
-      achievement:
-        "Led a team of 6 members and stood first among 30+ teams in an ideathon held by my university, for creating a simple prototype for a portable bottle capable of producing drinkable water on the go.",
+      title: "PES University Ideathon Winner",
+      organization: "PES University",
       date: "AUG 2019",
+      description:
+        "Led a team of 6 members and stood first among 30+ teams in an ideathon held by my university, for creating a simple prototype for a portable bottle capable of producing drinkable water on the go.",
     },
     {
-      achievement:
-        "TechnoSpark, SDIT, stood first among 200+ teams by leading a team of 4 members and developing a model to replace inefficient road transportation vehicles by a proposed electric vehicle thus reducing the loss per annum to a nation's economy.",
+      title: "TechnoSpark First Place",
+      organization: "SDIT",
       date: "JUL 2018",
+      description:
+        "TechnoSpark, SDIT, stood first among 200+ teams by leading a team of 4 members and developing a model to replace inefficient road transportation vehicles by a proposed electric vehicle thus reducing the loss per annum to a nation's economy.",
     },
   ];
 
@@ -133,18 +201,41 @@ const AchievementScreen = () => {
       <BackgroundImage />
       <ContentContainer>
         <Header>Achievements</Header>
-
-        {achievements.map((item, index) => (
-          <AchievementCard
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={controls}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Date>{item.date}</Date>
-            <AchievementText>{item.achievement}</AchievementText>
-          </AchievementCard>
-        ))}
+        <AchievementContainer
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+          transition={{ duration: 0.5 }}
+        >
+          {achievements.map((achievement, index) => (
+            <AchievementCard
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={controls}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <Title>{achievement.title}</Title>
+              <Organization>{achievement.organization}</Organization>
+              <Date>{achievement.date}</Date>
+              <Description>{achievement.description}</Description>
+              {achievement.certificateLink && (
+                <CertificateLink
+                  href={achievement.certificateLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Certificate
+                </CertificateLink>
+              )}
+              {achievement.badges && (
+                <BadgeContainer>
+                  {achievement.badges.map((badge, badgeIndex) => (
+                    <Badge key={badgeIndex}>{badge}</Badge>
+                  ))}
+                </BadgeContainer>
+              )}
+            </AchievementCard>
+          ))}
+        </AchievementContainer>
       </ContentContainer>
     </PageContainer>
   );

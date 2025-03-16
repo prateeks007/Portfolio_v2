@@ -32,6 +32,8 @@ const PageContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
 `;
 
 const BackgroundImage = styled.div`
@@ -40,7 +42,12 @@ const BackgroundImage = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #000;
+  background: ${(props) => props.theme.background};
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.theme.secondaryBackground} 0%,
+    ${(props) => props.theme.background} 100%
+  );
   z-index: 0;
 `;
 
@@ -56,7 +63,7 @@ const ContentContainer = styled.div`
 const Header = styled.h1`
   font-size: 32px;
   font-weight: bold;
-  color: #fb9038;
+  color: ${(props) => props.theme.primary};
   margin-bottom: 40px;
   text-align: center;
   font-family: "Roboto", sans-serif;
@@ -69,11 +76,11 @@ const CategoryContainer = styled(motion.div)`
 
 const CategoryTitle = styled.h2`
   font-size: 24px;
-  color: #e0e0e0;
+  color: ${(props) => props.theme.text};
   margin-bottom: 20px;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
-  border-bottom: 1px solid rgba(251, 144, 56, 0.3);
+  border-bottom: 1px solid ${(props) => props.theme.border};
   padding-bottom: 8px;
   text-align: center;
 `;
@@ -97,11 +104,11 @@ const SkillItem = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(40, 44, 52, 0.8);
+  background-color: ${(props) => props.theme.cardBackground};
   border-radius: 12px;
   padding: 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px ${(props) => props.theme.shadowColor};
 
   svg {
     font-size: 40px;
@@ -112,7 +119,7 @@ const SkillItem = styled(motion.div)`
 
 const SkillName = styled.p`
   font-size: 16px;
-  color: #e0e0e0;
+  color: ${(props) => props.theme.cardText};
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-weight: 300;

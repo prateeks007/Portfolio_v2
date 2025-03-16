@@ -14,8 +14,8 @@ import {
 // Styled components
 const MainContainer = styled.div`
   min-height: 100vh;
-  background-color: #000;
-  color: white;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
   position: relative;
   overflow-y: auto;
   display: flex;
@@ -29,7 +29,12 @@ const BackgroundImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+  background: ${(props) => props.theme.background};
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.theme.secondaryBackground} 0%,
+    ${(props) => props.theme.background} 100%
+  );
   z-index: -1;
 `;
 
@@ -59,14 +64,19 @@ const HeaderRight = styled.div`
 const NavLink = styled(motion.button)`
   background: none;
   border: none;
-  color: #fb9038;
+  color: ${(props) => props.theme.primary};
   font-size: 16px;
   cursor: pointer;
   padding: 5px 0;
   font-weight: 300;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
   &:focus {
-    outline: 2px solid #fb9038;
-    outline-offset: 2px;
+    outline: none;
   }
 `;
 
@@ -82,7 +92,7 @@ const ProfileImage = styled(motion.img)`
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #fb9038;
+  border: 2px solid ${(props) => props.theme.primary};
   @media (max-width: 768px) {
     width: 170px;
     height: 170px;
@@ -109,7 +119,7 @@ const ContentSection = styled.div`
 
 const GreetingText = styled(motion.h2)`
   font-size: 36px;
-  color: #fb9038;
+  color: ${(props) => props.theme.primary};
   margin-bottom: 10px;
   font-weight: 300;
 `;
@@ -183,7 +193,7 @@ const SkillDetails = styled.p`
 `;
 
 const SkillCard = styled(motion.div)`
-  background-color: rgba(26, 26, 26, 0.8);
+  background-color: ${(props) => props.theme.cardBackground};
   border-radius: 10px;
   padding: 15px;
   width: 130px;
@@ -197,7 +207,7 @@ const SkillCard = styled(motion.div)`
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: rgba(40, 40, 40, 0.9);
+    background-color: ${(props) => `${props.theme.cardBackground}dd`};
 
     .skill-details {
       opacity: 1;
@@ -222,8 +232,8 @@ const CTAContainer = styled.div`
 const CTAButton = styled(motion.button)`
   padding: 10px 20px;
   background-color: transparent;
-  color: white;
-  border: 1px solid #fb9038;
+  color: ${(props) => props.theme.text};
+  border: 1px solid ${(props) => props.theme.primary};
   border-radius: 30px;
   font-size: 16px;
   font-weight: 400;
@@ -237,7 +247,7 @@ const CTAButton = styled(motion.button)`
   }
 
   &:hover {
-    background-color: rgba(251, 144, 56, 0.1);
+    background-color: ${(props) => `${props.theme.primary}1a`};
   }
 `;
 
@@ -245,7 +255,7 @@ const Footer = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: ${(props) => `${props.theme.cardBackground}cc`};
   padding: 20px 0;
   position: fixed;
   bottom: 0;
@@ -255,15 +265,15 @@ const Footer = styled.footer`
 `;
 
 const SocialIcon = styled(motion.a)`
-  color: white;
+  color: ${(props) => props.theme.text};
   margin: 0 16px;
   font-size: 20px;
   cursor: pointer;
 `;
 
 const LoadingSpinner = styled(motion.div)`
-  border: 3px solid rgba(251, 144, 56, 0.3);
-  border-top: 3px solid #fb9038;
+  border: 3px solid ${(props) => `${props.theme.primary}33`};
+  border-top: 3px solid ${(props) => props.theme.primary};
   border-radius: 50%;
   width: 40px;
   height: 40px;

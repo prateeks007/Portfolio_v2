@@ -9,9 +9,9 @@ const HeaderContainer = styled(motion.header)`
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(26, 42, 58, 0.85);
+  background: ${(props) => props.theme.cardBackground};
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(251, 144, 56, 0.1);
+  border-bottom: 1px solid ${(props) => props.theme.border};
   padding: 1rem 2rem;
 `;
 
@@ -24,7 +24,7 @@ const HeaderContent = styled.div`
 `;
 
 const Logo = styled(Link)`
-  color: #fb9038;
+  color: ${(props) => props.theme.primary};
   text-decoration: none;
   font-size: 1.5rem;
   font-weight: 600;
@@ -42,7 +42,7 @@ const Nav = styled.nav`
 `;
 
 const NavLink = styled(Link)`
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
   font-size: 1rem;
   position: relative;
@@ -55,8 +55,12 @@ const NavLink = styled(Link)`
     left: 0;
     width: 0;
     height: 2px;
-    background: #fb9038;
+    background: ${(props) => props.theme.primary};
     transition: width 0.3s ease;
+  }
+
+  &:hover {
+    color: ${(props) => props.theme.primary};
   }
 
   &:hover:after {
@@ -64,7 +68,7 @@ const NavLink = styled(Link)`
   }
 
   &.active {
-    color: #fb9038;
+    color: ${(props) => props.theme.primary};
 
     &:after {
       width: 100%;
@@ -76,7 +80,7 @@ const MobileMenuButton = styled.button`
   display: none;
   background: none;
   border: none;
-  color: #fff;
+  color: ${(props) => props.theme.text};
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
@@ -92,7 +96,7 @@ const MobileMenu = styled(motion.div)`
   top: 70px;
   left: 0;
   right: 0;
-  background: rgba(26, 42, 58, 0.95);
+  background: ${(props) => props.theme.secondaryBackground}f5;
   backdrop-filter: blur(10px);
   padding: 1rem;
 
@@ -103,18 +107,18 @@ const MobileMenu = styled(motion.div)`
 
 const MobileNavLink = styled(Link)`
   display: block;
-  color: #fff;
+  color: ${(props) => props.theme.text};
   text-decoration: none;
   padding: 1rem;
   text-align: center;
   font-size: 1.2rem;
 
   &:hover {
-    background: rgba(251, 144, 56, 0.1);
+    background: ${(props) => props.theme.border};
   }
 
   &.active {
-    color: #fb9038;
+    color: ${(props) => props.theme.primary};
   }
 `;
 
