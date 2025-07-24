@@ -1,94 +1,155 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion, useAnimation } from "framer-motion";
-import Timeline from "../components/Timeline";
+import Timeline from "../components/Timeline"; // Ensure your Timeline component also uses theme props
+
+// --- Keyframe Animations for Background ---
+// More organic background movement: using cubic-bezier for smoother flow
+const subtleShiftBackground = keyframes`
+  0% { background-position: 0% 50%; }
+  25% { background-position: 50% 75%; }
+  50% { background-position: 100% 50%; }
+  75% { background-position: 50% 25%; }
+  100% { background-position: 0% 50%; }
+`;
+
+// --- Styled Components ---
 
 const PageContainer = styled.div`
   min-height: 100vh;
   position: relative;
-  background-color: ${(props) => props.theme.background};
+  /* Use theme props for background, no fixed colors */
+  background: linear-gradient(
+    135deg,
+    ${(props) => props.theme.gradientStart} 0%,
+    ${(props) => props.theme.gradientEnd} 100%
+  );
+  color: ${(props) => props.theme.titleText}; /* Main text color from theme */
+  font-family: 'Inter', sans-serif;
+  overflow: hidden; /* Important to prevent scrollbars from background animation */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+
+  @media (max-width: 768px) {
+    padding: 20px 0;
+  }
 `;
 
-const BackgroundImage = styled.div`
+const AnimatedBackgroundOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: ${(props) => props.theme.background};
   background: linear-gradient(
-    135deg,
-    ${(props) => props.theme.secondaryBackground} 0%,
-    ${(props) => props.theme.background} 100%
+    45deg,
+    ${(props) => props.theme.animatedOverlay1},
+    ${(props) => props.theme.animatedOverlay2}
   );
+  background-size: 200% 200%; /* Allows for larger, more subtle movement */
+  animation: ${subtleShiftBackground} 40s ease-in-out infinite alternate; /* Slower, smoother, alternating */
+  opacity: 0.15;
   z-index: 0;
+  pointer-events: none;
 `;
 
 const ContentContainer = styled.div`
   position: relative;
   z-index: 1;
-  padding: 16px;
-  max-width: 800px;
+  padding: 60px 20px;
+  max-width: 900px;
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 40px 15px;
+  }
 `;
 
-const Header = styled.h1`
-  font-size: 32px;
-  font-weight: bold;
-  color: ${(props) => props.theme.primary};
-  margin-bottom: 40px;
+const Header = styled(motion.h1)`
+  font-size: 52px;
+  font-weight: 800;
+  color: ${(props) => props.theme.headerText};
+  margin-bottom: 70px;
   text-align: center;
   font-family: "Roboto", sans-serif;
-  font-weight: 100;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 30px ${(props) => props.theme.primary}B0; /* Slightly stronger glow */
+
+  @media (max-width: 768px) {
+    font-size: 42px;
+    margin-bottom: 50px;
+  }
+  @media (max-width: 480px) {
+    font-size: 36px;
+    margin-bottom: 40px;
+  }
 `;
 
 const ExperienceContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 35px;
 `;
 
-const ExperienceCard = styled.div`
-  background-color: ${(props) => props.theme.cardBackground};
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 6px ${(props) => props.theme.shadow};
-  transition: transform 0.2s;
+const ExperienceCard = styled(motion.div)`
+  background: ${(props) => props.theme.cardBackground};
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 15px 45px ${(props) => props.theme.cardShadow};
+  border: 1px solid ${(props) => props.theme.cardBorder};
+  perspective: 1000px; /* Enable 3D transforms for subtle rotation */
+
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, background 0.3s ease-out, border-color 0.3s ease-out;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px) rotateX(3deg) scale(1.01); /* Added subtle rotateX and scale */
+    background: ${(props) => props.theme.cardHoverBackground};
+    box-shadow: 0 20px 60px ${(props) => props.theme.cardShadow}A0;
+    border-color: ${(props) => props.theme.primary}50;
+  }
+
+  @media (max-width: 600px) {
+    padding: 25px;
   }
 `;
 
 const ExperienceHeader = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 `;
 
 const ExperienceTitle = styled.h2`
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
   color: ${(props) => props.theme.primary};
   font-family: "Roboto", sans-serif;
-  font-weight: 100;
+  letter-spacing: -0.025em;
+  text-shadow: 0 0 8px ${(props) => props.theme.primary}40; /* Slightly more pronounced title glow */
+
+  @media (max-width: 600px) {
+    font-size: 22px;
+  }
 `;
 
 const ExperienceCompany = styled.h3`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 4px;
-  color: ${(props) => props.theme.text};
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: ${(props) => props.theme.companyText};
+  font-family: "Inter", sans-serif;
 `;
 
 const ExperienceDate = styled.p`
-  font-size: 16px;
-  color: ${(props) => props.theme.cardText};
-  margin-bottom: 12px;
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
+  font-size: 18px;
+  color: ${(props) => props.theme.dateText};
+  margin-bottom: 18px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
 `;
 
 const ResponsibilitiesList = styled.ul`
@@ -97,44 +158,170 @@ const ResponsibilitiesList = styled.ul`
   margin: 0;
 `;
 
-const ResponsibilityItem = styled.li`
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: ${(props) => props.theme.cardText};
-  font-family: "Roboto", sans-serif;
+const ResponsibilityItem = styled(motion.li)`
+  font-size: 18px;
+  margin-bottom: 14px; /* Slightly more vertical space for readability */
+  color: ${(props) => props.theme.responsibilityText};
+  font-family: "Inter", sans-serif;
   font-weight: 300;
   position: relative;
-  padding-left: 20px;
+  padding-left: 30px;
+  line-height: 1.7; /* Increased line height for better readability */
 
   &:before {
     content: "•";
-    color: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.bulletColor};
     position: absolute;
     left: 0;
+    font-size: 1.3em;
+    line-height: 1.4;
+    transform: translateY(-2px);
+    filter: drop-shadow(0 0 5px ${(props) => props.theme.bulletColor}70); /* Stronger bullet glow */
+  }
+
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 
 const SectionDivider = styled.div`
-  height: 1px;
-  background-color: ${(props) => props.theme.border};
-  margin: 40px 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    ${(props) => props.theme.dividerColor} 20%,
+    ${(props) => props.theme.dividerGradientEnd} 80%,
+    transparent 100%
+  );
+  margin: 80px 0; /* More margin around the divider */
+  border-radius: 2px;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 24px;
+const SectionTitle = styled(motion.h2)`
+  font-size: 40px;
   color: ${(props) => props.theme.primary};
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   text-align: center;
   font-family: "Roboto", sans-serif;
-  font-weight: 100;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 25px ${(props) => props.theme.primary}70; /* Stronger glow */
+
+  @media (max-width: 768px) {
+    font-size: 34px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 480px) {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
 `;
+
+// --- Animation Variants ---
+
+const headerVariants = {
+  hidden: { opacity: 0, y: -80, rotateX: 15 }, // Slightly more dramatic entry
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: { type: "spring", stiffness: 70, damping: 10, delay: 0.3 }, // Slightly more delay
+  },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // Increased stagger for a slower, more deliberate reveal
+      delayChildren: 0.7, // More delay before cards start appearing
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 80, scale: 0.9, rotateX: -5 }, // Larger displacement, subtle initial rotation
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    transition: {
+      type: "spring",
+      stiffness: 80, // Adjusted stiffness
+      damping: 16, // Adjusted damping for a smoother "settle"
+      mass: 1.2, // Heavier feel
+    },
+  },
+};
+
+const responsibilityItemVariants = {
+  hidden: { opacity: 0, x: -30, scaleX: 0.8 }, // Slides in further, squishes slightly
+  visible: {
+    opacity: 1,
+    x: 0,
+    scaleX: 1,
+    transition: {
+      type: "spring",
+      stiffness: 120, // Snappier bullet entry
+      damping: 15,
+      duration: 0.5,
+    },
+  },
+};
+
+const sectionTitleVariants = {
+  hidden: { opacity: 0, y: 60, rotateX: -10 }, // More dramatic entry for section titles
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: { type: "spring", stiffness: 70, damping: 10, delay: 0.4 },
+  },
+};
+
+// --- Component ---
 
 const ExperienceScreen = () => {
   const controls = useAnimation();
+  const timelineTitleControls = useAnimation();
+
+  // Use Intersection Observer for section titles to animate them as they come into view
+  // rather than animating on initial page load if they're far down.
+  // This is a common pattern for "even better" user experience.
+  const sectionRef = React.useRef(null);
+  const timelineRef = React.useRef(null);
 
   useEffect(() => {
-    controls.start({ opacity: 1, y: 0 });
-  }, [controls]);
+    // Animate the main header and cards immediately on mount
+    controls.start("visible");
+
+    // Observe timeline title for animation when it enters viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timelineTitleControls.start("visible");
+        }
+      },
+      {
+        root: null, // viewport
+        rootMargin: "0px",
+        threshold: 0.5, // Trigger when 50% of the element is visible
+      }
+    );
+
+    if (timelineRef.current) {
+      observer.observe(timelineRef.current);
+    }
+
+    // Cleanup observer on component unmount
+    return () => {
+      if (timelineRef.current) {
+        observer.unobserve(timelineRef.current);
+      }
+    };
+  }, [controls, timelineTitleControls]);
 
   const experiences = [
     {
@@ -180,7 +367,6 @@ const ExperienceScreen = () => {
     },
   ];
 
-  // Timeline data for the visual timeline
   const timelineEvents = [
     {
       year: "2023",
@@ -210,16 +396,24 @@ const ExperienceScreen = () => {
 
   return (
     <PageContainer>
-      <BackgroundImage />
+      <AnimatedBackgroundOverlay />
+
       <ContentContainer>
-        <Header>Experience</Header>
+        <Header
+          variants={headerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          My Professional Journey
+        </Header>
+
         <ExperienceContainer
-          initial={{ opacity: 0, y: 20 }}
+          variants={containerVariants}
+          initial="hidden"
           animate={controls}
-          transition={{ duration: 0.5 }}
         >
           {experiences.map((exp, index) => (
-            <ExperienceCard key={index}>
+            <ExperienceCard key={index} variants={cardVariants}>
               <ExperienceHeader>
                 <ExperienceTitle>{exp.title}</ExperienceTitle>
                 <ExperienceCompany>{exp.company}</ExperienceCompany>
@@ -227,7 +421,10 @@ const ExperienceScreen = () => {
               </ExperienceHeader>
               <ResponsibilitiesList>
                 {exp.responsibilities.map((resp, respIndex) => (
-                  <ResponsibilityItem key={respIndex}>
+                  <ResponsibilityItem
+                    key={respIndex}
+                    variants={responsibilityItemVariants}
+                  >
                     {resp}
                   </ResponsibilityItem>
                 ))}
@@ -238,7 +435,16 @@ const ExperienceScreen = () => {
 
         <SectionDivider />
 
-        <SectionTitle>Career Timeline</SectionTitle>
+        {/* Use ref for Intersection Observer */}
+        <SectionTitle
+          ref={timelineRef}
+          variants={sectionTitleVariants}
+          initial="hidden"
+          animate={timelineTitleControls}
+        >
+          Career Timeline
+        </SectionTitle>
+        {/* Make sure your Timeline component also consumes the theme props */}
         <Timeline events={timelineEvents} />
       </ContentContainer>
     </PageContainer>

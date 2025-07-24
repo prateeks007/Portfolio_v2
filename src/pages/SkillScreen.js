@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+// SkillScreen.jsx
+import React from "react";
 import styled from "styled-components";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FaPython,
   FaReact,
@@ -17,6 +18,8 @@ import {
   FaSearch,
   FaDatabase,
   FaCode,
+  // FaLinux, // REMOVED as per request
+  // FaWindows, // REMOVED as per request
 } from "react-icons/fa";
 import {
   SiJavascript,
@@ -24,295 +27,273 @@ import {
   SiKubernetes,
   SiMysql,
   SiPostgresql,
+  // SiTypescript, // REMOVED as per request
+  // SiGraphql, // REMOVED as per request
+  // SiMongodb, // REMOVED as per request
+  // SiRedis, // REMOVED as per request
+  // SiGooglecloud, // REMOVED as per request
 } from "react-icons/si";
-import { MdSecurity, MdStorage } from "react-icons/md";
+import { MdSecurity, MdStorage } from "react-icons/md"; // MdCloud also removed
+
+// --- Styled Components (UNCHANGED from the "much better" version) ---
+// These styles provide the modern, sleek look.
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  position: relative;
+  background: linear-gradient(135deg, #0d0d0d, #151515); /* Slightly darker, more subtle gradient */
+  color: #e0e0e0; /* Softer white */
+  font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
-  background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.text};
+  align-items: center; /* Center content horizontally */
+  padding: 2rem 0; /* Add some top/bottom padding */
 `;
 
-const BackgroundImage = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: ${(props) => props.theme.background};
-  background: linear-gradient(
-    135deg,
-    ${(props) => props.theme.secondaryBackground} 0%,
-    ${(props) => props.theme.background} 100%
-  );
-  z-index: 0;
-`;
-
-const ContentContainer = styled.div`
-  position: relative;
-  z-index: 1;
-  padding: 16px;
-  max-width: 1000px;
-  margin: 0 auto;
+const Content = styled.div`
   flex: 1;
+  width: 100%; /* Use full width and max-width */
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem; /* Increase horizontal padding slightly */
 `;
 
-const Header = styled.h1`
-  font-size: 32px;
-  font-weight: bold;
-  color: ${(props) => props.theme.primary};
-  margin-bottom: 40px;
+const Header = styled(motion.h1)`
+  font-size: 3rem; /* Larger header */
   text-align: center;
-  font-family: "Roboto", sans-serif;
-  font-weight: 100;
+  color: #f7a43e; /* Brighter, more vibrant orange/gold */
+  margin-bottom: 4rem; /* More space below header */
+  font-weight: 700; /* Bolder */
+  letter-spacing: -0.05em; /* Tighter letter spacing for a modern look */
+  text-shadow: 0 0 15px rgba(247, 164, 62, 0.4); /* Subtle glow */
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+  }
 `;
 
-const CategoryContainer = styled(motion.div)`
-  margin-bottom: 40px;
+const CategorySection = styled(motion.section)`
+  margin-bottom: 4rem; /* More spacing between categories */
 `;
 
 const CategoryTitle = styled.h2`
-  font-size: 24px;
-  color: ${(props) => props.theme.text};
-  margin-bottom: 20px;
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  border-bottom: 1px solid ${(props) => props.theme.border};
-  padding-bottom: 8px;
+  font-size: 1.8rem; /* Slightly larger category titles */
+  color: #f7a43e; /* Match header accent color */
   text-align: center;
+  margin-bottom: 2rem; /* More space below title */
+  position: relative;
+  font-weight: 600;
+
+  &::after {
+    content: '';
+    width: 5rem; /* Wider underline */
+    height: 3px; /* Thicker underline */
+    background: linear-gradient(90deg, transparent, #f7a43e, transparent); /* Gradient underline */
+    display: block;
+    margin: 0.75rem auto 0;
+    border-radius: 2px; /* Rounded ends */
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const SkillsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem; /* Slightly larger gap */
 
-  @media (max-width: 768px) {
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 900px) {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
 `;
 
-const SkillItem = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) => props.theme.cardBackground};
-  border-radius: 12px;
-  padding: 20px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px ${(props) => props.theme.shadowColor};
+const SkillCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.08); /* Slightly more opaque for better contrast */
+  backdrop-filter: blur(10px); /* Increased blur */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more prominent border */
+  border-radius: 18px; /* Slightly more rounded corners */
+  padding: 1.8rem; /* Increased padding */
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Deeper, softer shadow */
+  transition: transform 0.2s ease-out, background 0.2s ease-out, border-color 0.2s ease-out; /* Smooth transition for hover */
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.12); /* Brighter on hover */
+    border-color: rgba(247, 164, 62, 0.5); /* Accent border on hover */
+  }
 
   svg {
-    font-size: 40px;
-    margin-bottom: 12px;
-    color: ${(props) => props.iconColor || "#fb9038"};
+    font-size: 2.5rem; /* Larger icons */
+    margin-bottom: 0.8rem;
+    color: #f7a43e; /* Icon color matches accent */
+    filter: drop-shadow(0 0 5px rgba(247, 164, 62, 0.3)); /* Subtle icon glow */
   }
 `;
 
 const SkillName = styled.p`
-  font-size: 16px;
-  color: ${(props) => props.theme.cardText};
-  text-align: center;
-  font-family: "Roboto", sans-serif;
-  font-weight: 300;
-  margin-bottom: 10px;
+  font-size: 1.1rem; /* Slightly larger skill name */
+  color: #f8f8f8;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
 `;
 
 const ProgressBar = styled.div`
   width: 100%;
-  height: 6px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  height: 6px; /* Thicker progress bar */
+  background: #282828; /* Darker background for contrast */
+  border-radius: 4px; /* More rounded */
   overflow: hidden;
 `;
 
 const ProgressFill = styled(motion.div)`
   height: 100%;
-  background-color: #fb9038;
-  border-radius: 3px;
+  background: linear-gradient(90deg, #f7a43e, #ff6b6b); /* More vibrant gradient */
+  border-radius: 4px;
 `;
 
+// --- Animation Variants (UNCHANGED from the "much better" version) ---
+
+const headerVariants = {
+  hidden: { opacity: 0, y: -50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // Stagger categories slightly
+      delayChildren: 0.5, // Delay before categories start animating
+    },
+  },
+};
+
+const categoryVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: "easeOut",
+      when: "beforeChildren", // Animate category title before cards
+      staggerChildren: 0.08, // Stagger skill cards within each category
+      delayChildren: 0.2, // Delay for skill cards within category
+    },
+  },
+};
+
+const skillCardVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100, // Softer spring
+      damping: 12,
+    },
+  },
+};
+
+// --- Data (REVERTED to your ORIGINAL set) ---
+
+const skillCategories = [
+  {
+    category: "Programming Languages",
+    skills: [
+      { name: "Python", icon: <FaPython />, proficiency: 80 },
+      { name: "JavaScript", icon: <SiJavascript />, proficiency: 50 },
+      { name: "Ruby", icon: <SiRuby />, proficiency: 20 },
+    ],
+  },
+  {
+    category: "Web Technologies",
+    skills: [
+      { name: "React", icon: <FaReact />, proficiency: 45 },
+      { name: "Node.js", icon: <FaNodeJs />, proficiency: 55 },
+      { name: "HTML5", icon: <FaHtml5 />, proficiency: 60 },
+      { name: "CSS3", icon: <FaCss3Alt />, proficiency: 55 },
+    ],
+  },
+  {
+    category: "DevOps & Cloud",
+    skills: [
+      { name: "Docker", icon: <FaDocker />, proficiency: 90 },
+      { name: "Kubernetes", icon: <SiKubernetes />, proficiency: 90 },
+      { name: "Jenkins", icon: <FaJenkins />, proficiency: 70 },
+      { name: "Git", icon: <FaGit />, proficiency: 95 },
+      { name: "GitHub Actions", icon: <FaGithub />, proficiency: 90 },
+      { name: "AWS", icon: <FaAws />, proficiency: 75 },
+      { name: "Elasticsearch", icon: <MdStorage />, proficiency: 85 },
+    ],
+  },
+  {
+    category: "Databases",
+    skills: [
+      { name: "MySQL", icon: <SiMysql />, proficiency: 75 },
+      { name: "PostgreSQL", icon: <SiPostgresql />, proficiency: 70 },
+    ],
+  },
+  {
+    category: "Security",
+    skills: [
+      { name: "Wazuh (SIEM)", icon: <MdSecurity />, proficiency: 85 },
+      { name: "OWASP ZAP", icon: <FaShieldAlt />, proficiency: 80 },
+      { name: "Burp Suite", icon: <FaBug />, proficiency: 75 },
+      { name: "Metasploit", icon: <FaCode />, proficiency: 70 },
+      { name: "sqlmap", icon: <FaDatabase />, proficiency: 80 },
+      { name: "Pen Testing", icon: <FaShieldAlt />, proficiency: 85 },
+      { name: "Snyk", icon: <FaShieldAlt />, proficiency: 75 },
+      { name: "Semgrep", icon: <FaCode />, proficiency: 70 },
+      { name: "Faraday", icon: <FaSearch />, proficiency: 65 },
+    ],
+  },
+];
+
+// --- Component ---
+
 const SkillScreen = () => {
-  const controls = useAnimation();
-
-  useEffect(() => {
-    controls.start("visible");
-  }, [controls]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-      },
-    },
-  };
-
-  const skillCategories = [
-    {
-      category: "Programming Languages",
-      skills: [
-        { name: "Python", icon: <FaPython color="#3776AB" />, proficiency: 80 },
-        {
-          name: "JavaScript",
-          icon: <SiJavascript color="#F7DF1E" />,
-          proficiency: 50,
-        },
-        { name: "Ruby", icon: <SiRuby color="#CC342D" />, proficiency: 20 },
-      ],
-    },
-    {
-      category: "Web Technologies",
-      skills: [
-        { name: "React", icon: <FaReact color="#61DAFB" />, proficiency: 45 },
-        {
-          name: "Node.js",
-          icon: <FaNodeJs color="#339933" />,
-          proficiency: 55,
-        },
-        { name: "HTML5", icon: <FaHtml5 color="#E34F26" />, proficiency: 60 },
-        { name: "CSS3", icon: <FaCss3Alt color="#1572B6" />, proficiency: 55 },
-      ],
-    },
-    {
-      category: "DevOps & Cloud",
-      skills: [
-        { name: "Docker", icon: <FaDocker color="#2496ED" />, proficiency: 90 },
-        {
-          name: "Kubernetes",
-          icon: <SiKubernetes color="#326CE5" />,
-          proficiency: 90,
-        },
-        {
-          name: "Jenkins",
-          icon: <FaJenkins color="#D24939" />,
-          proficiency: 70,
-        },
-        { name: "Git", icon: <FaGit color="#F05032" />, proficiency: 95 },
-        {
-          name: "GitHub Actions",
-          icon: <FaGithub color="#ffffff" />,
-          proficiency: 90,
-        },
-        {
-          name: "AWS",
-          icon: <FaAws color="#FF9900" />,
-          proficiency: 75,
-        },
-        {
-          name: "Elasticsearch",
-          icon: <MdStorage color="#005571" />,
-          proficiency: 85,
-        },
-      ],
-    },
-    {
-      category: "Databases",
-      skills: [
-        { name: "MySQL", icon: <SiMysql color="#4479A1" />, proficiency: 75 },
-        {
-          name: "PostgreSQL",
-          icon: <SiPostgresql color="#336791" />,
-          proficiency: 70,
-        },
-      ],
-    },
-    {
-      category: "Security",
-      skills: [
-        {
-          name: "Wazuh (SIEM)",
-          icon: <MdSecurity color="#1A73E8" />,
-          proficiency: 85,
-        },
-        {
-          name: "OWASP ZAP",
-          icon: <FaShieldAlt color="#5B69BC" />,
-          proficiency: 80,
-        },
-        {
-          name: "Burp Suite",
-          icon: <FaBug color="#FF6633" />,
-          proficiency: 75,
-        },
-        {
-          name: "Metasploit",
-          icon: <FaCode color="#2A6478" />,
-          proficiency: 70,
-        },
-        {
-          name: "sqlmap",
-          icon: <FaDatabase color="#4479A1" />,
-          proficiency: 80,
-        },
-        {
-          name: "Penetration Testing",
-          icon: <FaShieldAlt color="#E34F26" />,
-          proficiency: 85,
-        },
-        {
-          name: "Snyk",
-          icon: <FaShieldAlt color="#4C4A73" />,
-          proficiency: 75,
-        },
-        {
-          name: "Semgrep",
-          icon: <FaCode color="#47A248" />,
-          proficiency: 70,
-        },
-        {
-          name: "Faraday",
-          icon: <FaSearch color="#00A4EF" />,
-          proficiency: 65,
-        },
-      ],
-    },
-  ];
-
   return (
     <PageContainer>
-      <BackgroundImage />
-      <ContentContainer>
-        <Header>Skills & Technologies</Header>
+      <Content>
+        <Header
+          variants={headerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          Skills & Technologies
+        </Header>
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          animate={controls}
+          animate="visible"
         >
-          {skillCategories.map((category, categoryIndex) => (
-            <CategoryContainer key={categoryIndex} variants={itemVariants}>
-              <CategoryTitle>{category.category}</CategoryTitle>
+          {skillCategories.map((cat, i) => (
+            <CategorySection key={i} variants={categoryVariants}>
+              <CategoryTitle>{cat.category}</CategoryTitle>
               <SkillsGrid>
-                {category.skills.map((skill, skillIndex) => (
-                  <SkillItem
-                    key={skillIndex}
-                    variants={itemVariants}
-                    whileHover={{
-                      scale: 1.05,
-                      transition: { type: "spring", stiffness: 300 },
-                    }}
+                {cat.skills.map((skill, idx) => (
+                  <SkillCard
+                    key={idx}
+                    variants={skillCardVariants}
+                    whileHover={{ scale: 1.03, boxShadow: "0 12px 40px rgba(0,0,0,0.5)" }}
                     whileTap={{ scale: 0.98 }}
                   >
                     {skill.icon}
@@ -321,16 +302,16 @@ const SkillScreen = () => {
                       <ProgressFill
                         initial={{ width: 0 }}
                         animate={{ width: `${skill.proficiency}%` }}
-                        transition={{ delay: 0.5, duration: 1 }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
                       />
                     </ProgressBar>
-                  </SkillItem>
+                  </SkillCard>
                 ))}
               </SkillsGrid>
-            </CategoryContainer>
+            </CategorySection>
           ))}
         </motion.div>
-      </ContentContainer>
+      </Content>
     </PageContainer>
   );
 };

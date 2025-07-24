@@ -1,562 +1,732 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { motion, useAnimation } from "framer-motion";
-import {
-  FaLinkedinIn,
-  FaGithub,
-  FaCode,
-  FaServer,
-  FaShieldAlt,
-  FaEnvelope,
-} from "react-icons/fa";
+import styled, { css } from "styled-components";
+import { motion } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
 
-// Styled components
-const MainContainer = styled.div`
-  min-height: 100vh;
-  background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.text};
-  position: relative;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 60px;
+import {
+  FaEnvelope,
+  FaBriefcase, // For Experience
+  FaCode, // For Skills
+  FaTrophy, // For Achievements
+  FaArrowUp, // For Scroll To Top
+} from "react-icons/fa";
+import { FiLoader } from "react-icons/fi"; // For loading spinner
+
+// --- Reusable CSS Mixins ---
+const gradientHighlight = (theme) => css`
+  background: linear-gradient(120deg, ${theme.primary} 0%, ${theme.accentLight} 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; 
+  color: transparent; 
 `;
 
-const BackgroundImage = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    45deg,
-    ${(props) => props.theme.background} 0%,
-    ${(props) => `${props.theme.primary}30`} 25%,
-    ${(props) => props.theme.background} 50%,
-    ${(props) => `${props.theme.primary}30`} 75%,
+// --- Global Font Imports Suggestion (Add this to your public/index.html or App.css) ---
+/*
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+*/
+
+// --- Main Container: The Full Page Canvas ---
+const MainContainer = styled(motion.div)`
+  min-height: 100vh;
+  background: radial-gradient(
+    circle at 50% -10%,
+    ${(props) => props.theme.gradientEnd} 0%,
     ${(props) => props.theme.background} 100%
   );
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-  z-index: -1;
-
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
+  color: ${(props) => props.theme.text};
   position: relative;
-  z-index: 1;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 20px;
-  }
-`;
-
-const HeaderLeft = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const HeaderRight = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const NavLink = styled(motion.button)`
-  background: none;
-  border: none;
-  color: ${(props) => props.theme.primary};
-  font-size: 16px;
-  cursor: pointer;
-  padding: 5px 0;
-  font-weight: 300;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const ProfileSection = styled.div`
+  overflow: hidden; /* Contains all animated elements */
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif; 
+  padding: 100px 20px 60px 20px; 
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 80px 15px 40px 15px;
+  }
+`;
+
+// --- Animated Background Blobs: Highly Optimized for Performance ---
+const AnimatedBlob = styled(motion.div)`
+  position: absolute;
+  border-radius: 50%;
+  opacity: ${(props) => props.$opacity || 0.008}; /* Extremely low opacity */
+  filter: blur(350px); /* Max blur for super cloud-like effect */
+  pointer-events: none;
+  z-index: 0;
+  background: ${(props) => props.$color || props.theme.primary};
+`;
+
+// --- Hero Section: The Core Introduction ---
+const HeroSection = styled(motion.section)`
   position: relative;
+  z-index: 1; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 1000px; 
+  width: 100%;
+  gap: 60px; /* Generous spacing for readability */
+  padding: 40px 0; 
+
+  @media (max-width: 768px) {
+    gap: 50px;
+    padding: 20px 0;
+  }
 `;
 
 const ProfileImage = styled(motion.img)`
-  width: 200px;
+  width: 200px; 
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid ${(props) => props.theme.primary};
-  @media (max-width: 768px) {
-    width: 170px;
-    height: 170px;
-  }
-`;
-
-const ProfileName = styled.h1`
-  font-size: 24px;
-  margin-top: 10px;
-  font-weight: 400;
-`;
-
-const ContentSection = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px 20px;
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-`;
-
-const GreetingText = styled(motion.h2)`
-  font-size: 36px;
-  color: ${(props) => props.theme.primary};
-  margin-bottom: 10px;
-  font-weight: 300;
-`;
-
-const IntroText = styled(motion.h3)`
-  font-size: 28px;
-  margin-bottom: 20px;
-  font-weight: 300;
-`;
-
-const DescriptionText = styled(motion.p)`
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 15px;
-  font-weight: 300;
-  max-width: 600px;
-`;
-
-const Cursor = styled.span`
-  animation: blink 1s step-end infinite;
-
-  @keyframes blink {
-    from,
-    to {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-`;
-
-const SkillsPreview = styled(motion.div)`
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  @media (max-width: 500px) {
-    gap: 15px;
-  }
-`;
-
-const SkillIcon = styled.div`
-  font-size: 24px;
-  color: #fb9038;
-  margin-bottom: 12px;
-  transition: transform 0.3s ease;
-`;
-
-const SkillTitle = styled.h4`
-  font-size: 16px;
-  margin-bottom: 8px;
-  font-weight: 400;
-  transition: transform 0.3s ease;
-`;
-
-const SkillDetails = styled.p`
-  font-size: 12px;
-  text-align: center;
-  color: #ccc;
-  position: absolute;
-  bottom: 15px;
-  left: 0;
-  right: 0;
-  padding: 0 8px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
-`;
-
-const SkillCard = styled(motion.div)`
-  background-color: ${(props) => props.theme.cardBackground};
-  border-radius: 10px;
-  padding: 15px;
-  width: 130px;
-  height: 130px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  background: ${(props) => props.theme.cardBackground}; 
+  box-shadow: 
+    inset 0 0 15px rgba(0, 0, 0, 0.3), 
+    0 0 0 4px rgba(${(props) => props.theme.text === '#ffffff' ? '255, 255, 255' : '0, 0, 0'}, 0.05); 
+  margin-bottom: 40px; 
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
 
   &:hover {
-    background-color: ${(props) => `${props.theme.cardBackground}dd`};
+    transform: scale(1.03); 
+    box-shadow: 
+      inset 0 0 20px rgba(0, 0, 0, 0.4), 
+      0 0 0 5px rgba(${(props) => props.theme.text === '#ffffff' ? '255, 255, 255' : '0, 0, 0'}, 0.1),
+      0 0 0 8px ${(props) => props.theme.primary}30; 
+  }
 
-    .skill-details {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    ${SkillIcon}, ${SkillTitle} {
-      transform: translateY(-30px);
-    }
+  @media (max-width: 600px) {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 35px;
   }
 `;
 
-const CTAContainer = styled.div`
+const ProfileName = styled(motion.h1)`
+  font-family: 'Outfit', sans-serif; 
+  font-size: 7.0rem; 
+  font-weight: 900; 
+  margin: 0;
+  letter-spacing: -0.09em; 
+  line-height: 1;
+  color: ${(props) => props.theme.titleText}; /* Default to solid color for max clarity */
+  text-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.35); /* Crisp shadow for definition */
+
+  /* Apply gradient only if theme.nameGradient is true AND it looks good in both modes */
+  ${(props) => props.theme.nameGradient && css`
+    background: linear-gradient(120deg, ${(props) => props.theme.primary} 0%, ${(props) => props.theme.accentLight} 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Fallback for browsers not supporting text-fill-color */
+    text-shadow: none; /* Remove shadow if gradient applied to prevent blur */
+  `};
+
+  @media (max-width: 1200px) {
+    font-size: 6.2rem;
+  }
+  @media (max-width: 992px) {
+    font-size: 5.2rem;
+  }
+  @media (max-width: 768px) {
+    font-size: 4.4rem;
+    letter-spacing: -0.08em;
+  }
+  @media (max-width: 576px) {
+    font-size: 3.8rem;
+    letter-spacing: -0.07em;
+  }
+`;
+
+const TaglineText = styled(motion.h2)`
+  font-family: 'Outfit', sans-serif; 
+  font-size: 3.2rem; 
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.5; 
+  color: ${(props) => props.theme.titleText};
+  min-height: 120px; 
+  max-width: 950px;
+  opacity: 0.99; 
+
+  .Typewriter__wrapper {
+    ${(props) => gradientHighlight(props.theme)};
+    font-family: 'Outfit', sans-serif; 
+    font-weight: 600; 
+  }
+  .Typewriter__cursor {
+    color: ${(props) => props.theme.primary};
+    font-size: 1.1em;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 2.8rem;
+    min-height: 110px;
+  }
+  @media (max-width: 768px) {
+    font-size: 2.4rem;
+    min-height: 100px;
+  }
+  @media (max-width: 480px) {
+    font-size: 2rem;
+    min-height: 90px;
+  }
+`;
+
+const IntroParagraph = styled(motion.p)`
+  font-family: 'Inter', sans-serif; 
+  margin: 0 0 90px 0; 
+  font-size: 1.5rem; 
+  font-weight: 380; 
+  color: ${(props) => props.theme.softText};
+  opacity: 0.96;
+  line-height: 2.2; 
+  letter-spacing: 0.015em; 
+  max-width: 900px;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.35rem;
+    margin-bottom: 80px;
+  }
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    margin-bottom: 70px;
+  }
+`;
+
+// --- Primary Call To Action (Contact) ---
+const PrimaryCTA = styled(motion.div)`
   display: flex;
   justify-content: center;
-  padding: 10px 0;
   width: 100%;
-  z-index: 1;
-  margin-bottom: 10px;
+  margin-bottom: 130px; 
+
+  @media (max-width: 768px) {
+    margin-bottom: 100px;
+  }
 `;
 
 const CTAButton = styled(motion.button)`
-  padding: 10px 20px;
-  background-color: transparent;
-  color: ${(props) => props.theme.text};
-  border: 1px solid ${(props) => props.theme.primary};
-  border-radius: 30px;
-  font-size: 16px;
-  font-weight: 400;
+  font-family: 'Outfit', sans-serif; 
+  padding: 20px 60px; 
+  background: ${(props) => gradientHighlight(props.theme).background};
+  /* Explicitly set button text color based on background for contrast */
+  color: ${(props) => props.theme.background === '#f0f2f5' ? '#1a1a1a' : '#ffffff'}; /* Dark text for light mode, white for dark */
+  border: none;
+  border-radius: 40px; 
+  font-size: 1.5rem; 
+  font-weight: 700;
+  letter-spacing: 0.04em; 
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 20px; 
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+  box-shadow: 
+    0 6px 15px 0 rgba(${(props) => props.theme.primaryR}, ${(props) => props.theme.primaryG}, ${(props) => props.theme.primaryB}, 0.2),
+    0 10px 25px 0 rgba(${(props) => props.theme.primaryR}, ${(props) => props.theme.primaryG}, ${(props) => props.theme.primaryB}, 0.15);
+  position: relative;
+  overflow: hidden;
+
+  &:before { 
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%; 
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(-20deg); 
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  &:hover, &:focus {
+    transform: translateY(-6px) scale(1.03); 
+    box-shadow: 
+      0 10px 25px 0 rgba(${(props) => props.theme.primaryR}, ${(props) => props.theme.primaryG}, ${(props) => props.theme.primaryB}, 0.3),
+      0 15px 40px 0 rgba(${(props) => props.theme.primaryR}, ${(props) => props.theme.primaryG}, ${(props) => props.theme.primaryB}, 0.25); 
+    outline: none;
+    &:before {
+      left: 150%; 
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(0.98);
+    box-shadow: 
+      0 4px 10px 0 rgba(${(props) => props.theme.primaryR}, ${(props) => props.theme.primaryG}, ${(props) => props.theme.primaryB}, 0.1),
+      0 6px 15px 0 rgba(${(props) => props.theme.primaryR}, ${(props) => props.theme.primaryG}, ${(props) => props.theme.primaryB}, 0.08);
+  }
 
   svg {
-    font-size: 16px;
+    font-size: 1.6rem;
   }
 
-  &:hover {
-    background-color: ${(props) => `${props.theme.primary}1a`};
+  @media (max-width: 768px) {
+    padding: 18px 50px;
+    font-size: 1.3rem;
+    gap: 18px;
+  }
+  @media (max-width: 480px) {
+    padding: 16px 40px;
+    font-size: 1.15rem;
+    gap: 16px;
   }
 `;
 
-const Footer = styled.footer`
+// --- Feature Cards: Refined for Sleek Aura & Performance ---
+const FeatureCardsContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: ${(props) => `${props.theme.cardBackground}cc`};
-  padding: 20px 0;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
+  flex-wrap: wrap;
+  gap: 35px; 
+  margin-top: 110px; 
   width: 100%;
+  max-width: 1100px; 
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    gap: 25px;
+    margin-top: 90px;
+  }
 `;
 
-const SocialIcon = styled(motion.a)`
-  color: ${(props) => props.theme.text};
-  margin: 0 16px;
-  font-size: 20px;
+const FeatureCard = styled(motion.div)`
+  background: ${(props) => props.theme.cardBackground}; 
+  border-radius: 16px; 
+  padding: 35px 25px; 
+  width: 300px; 
+  min-height: 240px; 
+  position: relative;
   cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
+  border: 1px solid ${(props) => props.theme.cardBorder || 'transparent'}; /* New: dynamic border */
+  
+  /* Multi-layered, ultra-subtle shadows for a truly floating look */
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.01),
+    0 2px 8px rgba(0, 0, 0, 0.02),
+    0 5px 20px rgba(0, 0, 0, 0.03); 
+
+  &:hover, &:focus {
+    transform: translateY(-8px) scale(1.01); 
+    outline: none;
+    /* Enhanced hover shadow with a controlled, elegant glow */
+    box-shadow: 
+      0 2px 5px rgba(0, 0, 0, 0.02),
+      0 5px 15px rgba(0, 0, 0, 0.04),
+      0 10px 30px rgba(0, 0, 0, 0.05),
+      0 0 30px ${(props) => props.theme.primary}40; 
+    border-color: ${(props) => props.theme.primary}A0; 
+  }
+
+  @media (max-width: 480px) {
+    width: 90%; 
+    min-height: 220px;
+    padding: 30px 20px;
+  }
+`;
+
+const FeatureIcon = styled(motion.div)`
+  font-size: 4.5rem; 
+  color: ${(props) => props.theme.primary};
+  margin-bottom: 25px;
+  
+  ${FeatureCard}:hover & {
+    transform: translateY(-6px) rotate(2deg) scale(1.05); 
+    color: ${(props) => props.theme.accentLight}; 
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 4rem;
+    margin-bottom: 20px;
+  }
+`;
+
+const FeatureTitle = styled(motion.h3)`
+  font-family: 'Outfit', sans-serif; 
+  font-size: 2.0rem; 
+  font-weight: 700;
+  margin: 0 0 15px 0;
+  color: ${(props) => props.theme.titleText};
+  line-height: 1.25;
+
+  ${FeatureCard}:hover & {
+    transform: translateY(-4px); 
+    color: ${(props) => props.theme.primary};
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 1.6rem;
+  }
+`;
+
+const FeatureDescription = styled(motion.p)`
+  font-family: 'Inter', sans-serif; 
+  font-size: 1.1rem; 
+  color: ${(props) => props.theme.softText};
+  line-height: 1.7;
+  opacity: 0.96;
+  letter-spacing: 0.005em;
+
+  ${FeatureCard}:hover & {
+    opacity: 1; 
+    transform: translateY(4px); 
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.0rem;
+  }
+`;
+
+// --- Scroll to Top Button ---
+const ScrollToTopButton = styled(motion.button)`
+  position: fixed;
+  bottom: 50px; 
+  right: 50px;
+  background: ${(props) => gradientHighlight(props.theme).background};
+  color: ${(props) => props.theme.buttonText};
+  border: none;
+  border-radius: 50%;
+  width: 60px; 
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px ${(props) => props.theme.primary}60;
+  z-index: 100; 
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  &:hover, &:focus {
+    transform: translateY(-8px) scale(1.1); 
+    box-shadow: 0 15px 40px ${(props) => props.theme.primary}90;
+    outline: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+    bottom: 40px;
+    right: 40px;
+  }
+`;
+
+// --- Loading State ---
+const LoadingContainer = styled(MainContainer)`
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoadingSpinner = styled(motion.div)`
-  border: 3px solid ${(props) => `${props.theme.primary}33`};
-  border-top: 3px solid ${(props) => props.theme.primary};
+  border: 8px solid ${(props) => `${props.theme.primary}30`}; 
+  border-top: 8px solid ${(props) => props.theme.primary};
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: auto;
-  animation: spin 1s linear infinite;
+  width: 90px;
+  height: 90px;
+  animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
 
   @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 `;
 
-const MainScreen = () => {
+// --- Framer Motion Variants ---
+const pageEntranceVariants = {
+  hidden: { opacity: 0, scale: 0.98, y: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 1.0, 
+      ease: "easeOut",
+      when: "beforeChildren",
+      staggerChildren: 0.15, 
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    y: -30,
+    transition: { duration: 0.8, ease: "easeIn" }
+  }
+};
+
+const heroItemVariants = {
+  hidden: { opacity: 0, y: 50, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring", 
+      stiffness: 70, // Slightly softer spring
+      damping: 15,
+      mass: 0.9,
+      delay: 0.3 
+    },
+  },
+};
+
+const featureCardVariants = {
+  hidden: { opacity: 0, y: 80, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 60, // Softer spring for cards
+      damping: 12,
+      mass: 0.7,
+    },
+  },
+};
+
+// Optimized function for blob animation values - minimal movement, no scale/rotate
+const getBlobAnimation = (i) => ({
+  opacity: i % 2 === 0 ? 0.012 : 0.008, 
+  x: i % 2 === 0 ? ["-5%", "5%", "-5%"] : ["5%", "-5%", "5%"], 
+  y: i % 3 === 0 ? ["-5%", "5%", "-5%"] : ["5%", "-5%", "5%"], 
+  transition: {
+    duration: 180 + i * 40, // Even longer durations for imperceptible movement
+    repeat: Infinity,
+    repeatType: "loop",
+    ease: "linear", 
+    delay: i * 2, 
+  },
+});
+
+
+// --- Main Screen Component ---
+// This component should receive 'theme' and 'toggleTheme' from a parent ThemeProvider context
+const MainScreen = ({ theme, toggleTheme }) => { // Assume theme and toggleTheme are passed as props
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [typedText, setTypedText] = useState("");
-  const [showCursor, setShowCursor] = useState(true);
-
-  const imageControls = useAnimation();
-  const descriptionControls = useAnimation();
-  const skillsControls = useAnimation();
-  const socialIconsControls = useAnimation();
-  const ctaControls = useAnimation();
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   useEffect(() => {
-    const fullText = "Hello There!!!";
-    const typingSpeed = 100;
-    let currentIndex = 0;
+    const loadTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // Further reduced initial load delay for snappier feel
 
-    // Start animations
-    imageControls.start({ scale: 1, transition: { duration: 0.5 } });
-
-    const typingInterval = setInterval(() => {
-      if (currentIndex < fullText.length) {
-        setTypedText(fullText.substring(0, currentIndex + 1));
-        currentIndex++;
+    const handleScroll = () => {
+      if (window.scrollY > 400) { 
+        setShowScrollToTop(true);
       } else {
-        clearInterval(typingInterval);
-
-        // Start the next animations after typing is complete
-        descriptionControls.start({
-          opacity: 1,
-          y: 0,
-          transition: { delay: 0.3 },
-        });
-
-        skillsControls.start({
-          opacity: 1,
-          y: 0,
-          transition: { delay: 0.8 },
-        });
-
-        ctaControls.start({
-          opacity: 1,
-          y: 0,
-          transition: { delay: 1.0 },
-        });
-
-        socialIconsControls.start({
-          opacity: 1,
-          transition: { delay: 1.2 },
-        });
+        setShowScrollToTop(false);
       }
-    }, typingSpeed);
+    };
 
-    // Cursor blinking
-    const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev);
-    }, 500);
-
-    // Simulate loading time for animations
-    setTimeout(() => setIsLoading(false), 500);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      clearInterval(typingInterval);
-      clearInterval(cursorInterval);
+      clearTimeout(loadTimer);
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [
-    imageControls,
-    descriptionControls,
-    socialIconsControls,
-    skillsControls,
-    ctaControls,
-  ]);
+  }, []);
 
   const handleNavigation = (path) => {
-    // Fade out current content
-    descriptionControls.start({ opacity: 0 });
-    skillsControls.start({ opacity: 0 });
-
-    // Wait for animation to complete before navigating
-    setTimeout(() => {
-      navigate(path);
-    }, 300);
+    navigate(path);
   };
 
-  const handleOpenResume = () => {
-    window.open(
-      process.env.PUBLIC_URL + "/resume/Resume_Prateek Shetty.pdf",
-      "_blank"
-    );
-  };
+  // If theme is not passed or is null, provide a default (should ideally come from ThemeProvider)
+  // This helps prevent crashes if theme isn't properly wired up yet, but IS NOT the final solution
+  // The final solution requires your App.js or Layout.js to correctly pass theme/toggleTheme
+  if (!theme) {
+    console.warn("Theme not provided to MainScreen. Using default dark theme.");
+    theme = {
+      primary: "#FF7F50", // Coral / Orange-Red
+      primaryR: 255, primaryG: 127, primaryB: 80, 
+      accentLight: "#FFCC99", 
+      background: "#0a0a0a", 
+      gradientEnd: "#1a1a1a", 
+      text: "#ffffff", 
+      titleText: "#f0f0f0", 
+      softText: "#b0b0b0", 
+      buttonText: "#0a0a0a", 
+      cardBackground: "#1e1e1e", 
+      cardBackgroundAlt: "#282828", 
+      glassBackground: "rgba(30, 30, 30, 0.2)",
+      glassBorder: "rgba(255, 255, 255, 0.08)",
+      cardBorder: "rgba(255, 255, 255, 0.05)", // Specific card border for dark mode
+      nameGradient: true, 
+    };
+  }
+
 
   if (isLoading) {
     return (
-      <MainContainer>
-        <BackgroundImage />
+      <LoadingContainer style={{ backgroundColor: theme.background }}>
+        <AnimatedBlob
+          $color={theme.primary}
+          $opacity={0.3}
+          style={{ width: "900px", height: "900px", top: "0%", left: "-15%" }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 0.3, scale: 1.2, rotate: 360 }}
+          transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+        />
+        <AnimatedBlob
+          $color={theme.accentLight}
+          $opacity={0.2}
+          style={{ width: "800px", height: "800px", bottom: "-15%", right: "0%" }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 0.2, scale: 1.3, rotate: -360 }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear", delay: 1.5 }}
+        />
         <LoadingSpinner />
-      </MainContainer>
+      </LoadingContainer>
     );
   }
 
   return (
-    <MainContainer>
-      <BackgroundImage />
+    <MainContainer
+      variants={pageEntranceVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      theme={theme} 
+    >
+      {/* Reduced to 2 blobs for performance, ensure they cover the screen subtly */}
+      <AnimatedBlob
+        $color={theme.primary}
+        $opacity={getBlobAnimation(0).opacity}
+        style={{ top: "10%", left: "5%", width: "1000px", height: "1000px" }}
+        animate={{ 
+          x: getBlobAnimation(0).x,
+          y: getBlobAnimation(0).y,
+          opacity: getBlobAnimation(0).opacity,
+        }}
+        transition={getBlobAnimation(0).transition}
+      />
+      <AnimatedBlob
+        $color={theme.accentLight}
+        $opacity={getBlobAnimation(1).opacity}
+        style={{ bottom: "10%", right: "5%", width: "1200px", height: "1200px" }}
+        animate={{ 
+          x: getBlobAnimation(1).x,
+          y: getBlobAnimation(1).y,
+          opacity: getBlobAnimation(1).opacity,
+        }}
+        transition={getBlobAnimation(1).transition}
+      />
 
-      <Header>
-        <HeaderLeft>
-          <NavLink
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleNavigation("/experience")}
-          >
-            EXPERIENCE
-          </NavLink>
-          <NavLink
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleOpenResume}
-          >
-            RESUME
-          </NavLink>
-        </HeaderLeft>
+      <HeroSection>
+        <ProfileImage
+          src={process.env.PUBLIC_URL + "/images/self_profile_image.jpg"}
+          alt="Prateek Shetty"
+          variants={heroItemVariants}
+          theme={theme}
+        />
+        
+        <ProfileName variants={heroItemVariants} theme={theme}>
+          PRATEEK SHETTY
+        </ProfileName>
 
-        <ProfileSection>
-          <ProfileImage
-            src={process.env.PUBLIC_URL + "/images/self_profile_image.jpg"}
-            alt="Prateek Shetty"
-            initial={{ scale: 0.8 }}
-            animate={imageControls}
+        <TaglineText variants={heroItemVariants} theme={theme}>
+          <Typewriter
+            words={[
+              "Innovating at the Intersection of Code & Infrastructure 🚀",
+              "A DevOps Engineer & Systems Builder",
+              "Passionately Automating for Scalability & Reliability ⚙️",
+              "Kubernetes • Docker • AWS • Terraform • CI/CD Expert ☁️",
+              "Beyond the Keyboard: Living the Beautiful Game ⚽",
+            ]}
+            loop={0}
+            cursor
+            cursorStyle="_"
+            typeSpeed={50}
+            deleteSpeed={20}
+            delaySpeed={2200}
           />
-          <ProfileName>Prateek Shetty</ProfileName>
-        </ProfileSection>
+        </TaglineText>
 
-        <HeaderRight>
-          <NavLink
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => handleNavigation("/skills")}
+        <IntroParagraph variants={heroItemVariants} theme={theme}>
+          As a 2023 Computer Science graduate from PES University, I engineer and optimize robust, scalable solutions. My expertise spans cloud infrastructure, container orchestration, and continuous delivery, transforming complex systems into seamless, efficient workflows. Off-duty, I channel the same drive and precision into my passion for football.
+        </IntroParagraph>
+
+        <PrimaryCTA>
+          <CTAButton
+            onClick={() => handleNavigation("/contact")}
+            variants={heroItemVariants}
+            theme={theme}
           >
-            SKILLS
-          </NavLink>
-          <NavLink
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            <FaEnvelope /> Let's Connect
+          </CTAButton>
+        </PrimaryCTA>
+
+        <FeatureCardsContainer>
+          <FeatureCard
+            onClick={() => handleNavigation("/experience")}
+            variants={featureCardVariants}
+            theme={theme}
+          >
+            <FeatureIcon theme={theme}><FaBriefcase /></FeatureIcon>
+            <FeatureTitle theme={theme}>My Journey</FeatureTitle>
+            <FeatureDescription theme={theme}>
+              Explore my professional experience, roles, and key contributions.
+            </FeatureDescription>
+          </FeatureCard>
+
+          <FeatureCard
+            onClick={() => handleNavigation("/skills")}
+            variants={featureCardVariants}
+            theme={theme}
+          >
+            <FeatureIcon theme={theme}><FaCode /></FeatureIcon>
+            <FeatureTitle theme={theme}>My Expertise</FeatureTitle>
+            <FeatureDescription theme={theme}>
+              Dive into my technical proficiencies and tooling knowledge.
+            </FeatureDescription>
+          </FeatureCard>
+
+          <FeatureCard
             onClick={() => handleNavigation("/achievements")}
+            variants={featureCardVariants}
+            theme={theme}
           >
-            ACHIEVEMENTS
-          </NavLink>
-        </HeaderRight>
-      </Header>
+            <FeatureIcon theme={theme}><FaTrophy /></FeatureIcon>
+            <FeatureTitle theme={theme}>My Milestones</FeatureTitle>
+            <FeatureDescription theme={theme}>
+              Discover my certifications, awards, and project successes.
+            </FeatureDescription>
+          </FeatureCard>
+        </FeatureCardsContainer>
+      </HeroSection>
 
-      <ContentSection>
-        <GreetingText initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          {typedText}
-          {showCursor && <Cursor>|</Cursor>}
-        </GreetingText>
-
-        <IntroText
-          initial={{ opacity: 0, y: 20 }}
-          animate={descriptionControls}
+      {showScrollToTop && (
+        <ScrollToTopButton
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.5 }}
+          transition={{ duration: 0.3 }}
+          theme={theme}
         >
-          Prateek here.
-        </IntroText>
-
-        <DescriptionText
-          initial={{ opacity: 0, y: 20 }}
-          animate={descriptionControls}
-        >
-          I'm a 2023 Computer Science graduate from PES University. As a Junior
-          DevOps Engineer, I blend code and infrastructure to build seamless
-          solutions. Beyond tech, you'll find me on the football field, chasing
-          goals and living the beautiful game.
-        </DescriptionText>
-
-        <SkillsPreview initial={{ opacity: 0, y: 20 }} animate={skillsControls}>
-          <SkillCard
-            whileHover={{ y: -5 }}
-            onClick={() => handleNavigation("/skills")}
-          >
-            <SkillIcon>
-              <FaCode />
-            </SkillIcon>
-            <SkillTitle>Development</SkillTitle>
-            <SkillDetails className="skill-details">
-              JavaScript, React, Node.js, Python
-            </SkillDetails>
-          </SkillCard>
-
-          <SkillCard
-            whileHover={{ y: -5 }}
-            onClick={() => handleNavigation("/skills")}
-          >
-            <SkillIcon>
-              <FaServer />
-            </SkillIcon>
-            <SkillTitle>DevOps</SkillTitle>
-            <SkillDetails className="skill-details">
-              Docker, Kubernetes, AWS
-            </SkillDetails>
-          </SkillCard>
-
-          <SkillCard
-            whileHover={{ y: -5 }}
-            onClick={() => handleNavigation("/skills")}
-          >
-            <SkillIcon>
-              <FaShieldAlt />
-            </SkillIcon>
-            <SkillTitle>Security</SkillTitle>
-            <SkillDetails className="skill-details">
-              SIEM, Pen Testing, OWASP ZAP
-            </SkillDetails>
-          </SkillCard>
-        </SkillsPreview>
-      </ContentSection>
-
-      <CTAContainer>
-        <CTAButton
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => handleNavigation("/contact")}
-          initial={{ opacity: 0 }}
-          animate={ctaControls}
-        >
-          <FaEnvelope /> Get In Touch
-        </CTAButton>
-      </CTAContainer>
-
-      <Footer>
-        <SocialIcon
-          href="https://linkedin.com/in/prateek-shetty-7375031a6/"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0 }}
-          animate={socialIconsControls}
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <FaLinkedinIn />
-        </SocialIcon>
-        <SocialIcon
-          href="https://github.com/prateeks007"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0 }}
-          animate={socialIconsControls}
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <FaGithub />
-        </SocialIcon>
-      </Footer>
+          <FaArrowUp />
+        </ScrollToTopButton>
+      )}
     </MainContainer>
   );
 };
