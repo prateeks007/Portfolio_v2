@@ -1,4 +1,5 @@
-// SkillScreen.jsx
+// src/pages/SkillScreen.jsx
+
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
@@ -18,8 +19,6 @@ import {
   FaSearch,
   FaDatabase,
   FaCode,
-  // FaLinux, // REMOVED as per request
-  // FaWindows, // REMOVED as per request
 } from "react-icons/fa";
 import {
   SiJavascript,
@@ -27,75 +26,116 @@ import {
   SiKubernetes,
   SiMysql,
   SiPostgresql,
-  // SiTypescript, // REMOVED as per request
-  // SiGraphql, // REMOVED as per request
-  // SiMongodb, // REMOVED as per request
-  // SiRedis, // REMOVED as per request
-  // SiGooglecloud, // REMOVED as per request
 } from "react-icons/si";
-import { MdSecurity, MdStorage } from "react-icons/md"; // MdCloud also removed
+import { MdSecurity, MdStorage } from "react-icons/md";
 
-// --- Styled Components (UNCHANGED from the "much better" version) ---
-// These styles provide the modern, sleek look.
+// --- Reusable CSS Mixins ---
+// Ensure this mixin is either imported or defined globally if used elsewhere,
+// or keep a local copy if only for this file.
+const gradientHighlight = (theme) => `
+  background: linear-gradient(120deg, ${theme.primary} 0%, ${theme.accentLight} 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; 
+  color: transparent; 
+`;
 
-const PageContainer = styled.div`
+// --- Styled Components (UPDATED for better sleekness and glow control) ---
+
+const PageContainer = styled(motion.div)` 
   min-height: 100vh;
-  background: linear-gradient(135deg, #0d0d0d, #151515); /* Slightly darker, more subtle gradient */
-  color: #e0e0e0; /* Softer white */
+  /* Unified background with MainScreen for consistency */
+  background: radial-gradient(
+    circle at 50% -10%,
+    ${(props) => props.theme.gradientEnd} 0%,
+    ${(props) => props.theme.background} 100%
+  );
+  color: ${(props) => props.theme.titleText}; 
   font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  padding: 2rem 0; /* Add some top/bottom padding */
+  align-items: center;
+  padding: 2rem 0;
+  transition: background 0.5s ease, color 0.5s ease; /* Smoother theme transition */
+  overflow: hidden; 
 `;
 
 const Content = styled.div`
   flex: 1;
-  width: 100%; /* Use full width and max-width */
-  max-width: 1400px;
+  width: 100%;
+  max-width: 1200px; /* Standardized max-width for consistency across pages */
   margin: 0 auto;
-  padding: 4rem 1.5rem; /* Increase horizontal padding slightly */
+  padding: 4rem 1.5rem; /* Ample padding */
+  box-sizing: border-box; /* Include padding in width calculation */
+
+  @media (max-width: 768px) {
+    padding: 3rem 1rem;
+  }
 `;
 
 const Header = styled(motion.h1)`
-  font-size: 3rem; /* Larger header */
+  font-family: 'Outfit', sans-serif; 
+  font-size: 3.8rem; 
   text-align: center;
-  color: #f7a43e; /* Brighter, more vibrant orange/gold */
-  margin-bottom: 4rem; /* More space below header */
-  font-weight: 700; /* Bolder */
-  letter-spacing: -0.05em; /* Tighter letter spacing for a modern look */
-  text-shadow: 0 0 15px rgba(247, 164, 62, 0.4); /* Subtle glow */
+  /* Apply gradient for title */
+  ${(props) => gradientHighlight(props.theme)};
+  margin-bottom: 4rem;
+  font-weight: 800; 
+  letter-spacing: -0.06em; 
+  /* Use theme-defined glow for header */
+  text-shadow: 0 4px 20px ${(props) => props.theme.primaryGlow}; 
 
+
+  @media (max-width: 1024px) {
+    font-size: 3rem;
+  }
   @media (max-width: 768px) {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     margin-bottom: 3rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 2rem;
   }
 `;
 
 const CategorySection = styled(motion.section)`
-  margin-bottom: 4rem; /* More spacing between categories */
+  margin-bottom: 5rem; 
+
+  @media (max-width: 768px) {
+    margin-bottom: 3.5rem;
+  }
 `;
 
 const CategoryTitle = styled.h2`
-  font-size: 1.8rem; /* Slightly larger category titles */
-  color: #f7a43e; /* Match header accent color */
+  font-family: 'Outfit', sans-serif; 
+  font-size: 2.2rem; 
+  color: ${(props) => props.theme.titleText}; 
   text-align: center;
-  margin-bottom: 2rem; /* More space below title */
+  margin-bottom: 2.5rem; 
   position: relative;
-  font-weight: 600;
+  font-weight: 700; 
+  letter-spacing: -0.02em;
 
   &::after {
     content: '';
-    width: 5rem; /* Wider underline */
-    height: 3px; /* Thicker underline */
-    background: linear-gradient(90deg, transparent, #f7a43e, transparent); /* Gradient underline */
+    width: 6rem; 
+    height: 4px; 
+    background: linear-gradient(90deg, transparent, ${(props) => props.theme.primary}, ${(props) => props.theme.accentLight}, transparent); 
     display: block;
-    margin: 0.75rem auto 0;
-    border-radius: 2px; /* Rounded ends */
+    margin: 1rem auto 0; 
+    border-radius: 2px;
   }
 
   @media (max-width: 768px) {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    &::after {
+      width: 5rem;
+      height: 3px;
+    }
+  }
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
     margin-bottom: 1.5rem;
   }
 `;
@@ -103,7 +143,7 @@ const CategoryTitle = styled.h2`
 const SkillsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.8rem; /* Slightly larger gap */
+  gap: 2rem; 
 
   @media (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
@@ -113,54 +153,118 @@ const SkillsGrid = styled.div`
   }
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
+    padding: 0 1rem; 
   }
 `;
 
 const SkillCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.08); /* Slightly more opaque for better contrast */
-  backdrop-filter: blur(10px); /* Increased blur */
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more prominent border */
-  border-radius: 18px; /* Slightly more rounded corners */
-  padding: 1.8rem; /* Increased padding */
+  background: ${(props) => props.theme.cardBackground};
+  backdrop-filter: blur(10px);
+  border: 1px solid ${(props) => props.theme.cardBorder};
+  border-radius: ${(props) => props.theme.borderRadiusLg}; /* Standardized border-radius from theme */
+  padding: 2rem; 
   text-align: center;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* Deeper, softer shadow */
-  transition: transform 0.2s ease-out, background 0.2s ease-out, border-color 0.2s ease-out; /* Smooth transition for hover */
+  /* Use theme-defined card shadow */
+  box-shadow: ${(props) => props.theme.cardShadow}; 
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12); /* Brighter on hover */
-    border-color: rgba(247, 164, 62, 0.5); /* Accent border on hover */
+    background: ${(props) => props.theme.cardHoverBackground}; 
+    border-color: ${(props) => props.theme.primary}A0; 
+    transform: translateY(-8px) scale(1.01); 
+    /* Use theme-defined card hover shadow AND a primary glow */
+    box-shadow: 
+      ${(props) => props.theme.cardHoverShadow},
+      0 0 30px ${(props) => props.theme.primaryGlow}; 
   }
 
-  svg {
-    font-size: 2.5rem; /* Larger icons */
-    margin-bottom: 0.8rem;
-    color: #f7a43e; /* Icon color matches accent */
-    filter: drop-shadow(0 0 5px rgba(247, 164, 62, 0.3)); /* Subtle icon glow */
+  &:focus { /* Added focus style for accessibility */
+    outline: 2px solid ${(props) => props.theme.primary}80;
+    outline-offset: 4px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.5rem;
   }
 `;
 
+const SkillIcon = styled(motion.div)` 
+  font-size: 3.5rem; 
+  margin-bottom: 1rem;
+  color: ${(props) => props.theme.primary};
+  /* Use theme-defined primaryGlow for icon initial state */
+  filter: drop-shadow(0 0 8px ${(props) => props.theme.primaryGlow}); 
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); 
+
+  ${SkillCard}:hover & { 
+    transform: translateY(-6px) rotate(2deg) scale(1.08); 
+    color: ${(props) => props.theme.accentLight}; 
+    /* Use theme-defined accentLightGlow for icon hover state */
+    filter: drop-shadow(0 0 15px ${(props) => props.theme.accentLightGlow}); 
+  }
+
+  @media (max-width: 768px) {
+    font-size: 3rem;
+  }
+`;
+
+
 const SkillName = styled.p`
-  font-size: 1.1rem; /* Slightly larger skill name */
-  color: #f8f8f8;
-  margin-bottom: 0.75rem;
-  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem; 
+  color: ${(props) => props.theme.titleText};
+  margin-bottom: 0.8rem; 
+  font-weight: 600; 
+
+  ${SkillCard}:hover & {
+    color: ${(props) => props.theme.primary}; 
+    transform: translateY(-4px); 
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const ProgressBar = styled.div`
   width: 100%;
-  height: 6px; /* Thicker progress bar */
-  background: #282828; /* Darker background for contrast */
-  border-radius: 4px; /* More rounded */
+  height: 8px; 
+  background: ${(props) => props.theme.cardBackgroundAlt}; 
+  border-radius: 4px;
   overflow: hidden;
 `;
 
 const ProgressFill = styled(motion.div)`
   height: 100%;
-  background: linear-gradient(90deg, #f7a43e, #ff6b6b); /* More vibrant gradient */
+  background: linear-gradient(90deg, ${(props) => props.theme.primary}, ${(props) => props.theme.accentLight});
   border-radius: 4px;
 `;
 
-// --- Animation Variants (UNCHANGED from the "much better" version) ---
+// --- Animation Variants ---
+
+const pageEntranceVariants = { 
+  hidden: { opacity: 0, scale: 0.98, y: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 1.0, 
+      ease: "easeOut",
+      when: "beforeChildren",
+      staggerChildren: 0.15, 
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    y: -30,
+    transition: { duration: 0.8, ease: "easeIn" }
+  }
+};
+
 
 const headerVariants = {
   hidden: { opacity: 0, y: -50 },
@@ -168,17 +272,6 @@ const headerVariants = {
     opacity: 1,
     y: 0,
     transition: { duration: 0.8, ease: "easeOut" },
-  },
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15, // Stagger categories slightly
-      delayChildren: 0.5, // Delay before categories start animating
-    },
   },
 };
 
@@ -190,9 +283,9 @@ const categoryVariants = {
     transition: {
       duration: 0.7,
       ease: "easeOut",
-      when: "beforeChildren", // Animate category title before cards
-      staggerChildren: 0.08, // Stagger skill cards within each category
-      delayChildren: 0.2, // Delay for skill cards within category
+      when: "beforeChildren",
+      staggerChildren: 0.08,
+      delayChildren: 0.2,
     },
   },
 };
@@ -205,13 +298,13 @@ const skillCardVariants = {
     scale: 1,
     transition: {
       type: "spring",
-      stiffness: 100, // Softer spring
+      stiffness: 100,
       damping: 12,
     },
   },
 };
 
-// --- Data (REVERTED to your ORIGINAL set) ---
+// --- Data (UNCHANGED) ---
 
 const skillCategories = [
   {
@@ -268,41 +361,81 @@ const skillCategories = [
 
 // --- Component ---
 
-const SkillScreen = () => {
+const SkillScreen = ({ theme }) => { 
+  // Defensive check for theme, though it should ideally be provided by ThemeProvider
+  if (!theme) {
+    console.warn("Theme not provided to SkillScreen. Using default dark theme.");
+    // This default theme should ideally align with your default darkTheme in App.js
+    theme = {
+      primary: "#00bcd4",
+      primaryR: 0, primaryG: 188, primaryB: 212,
+      accentLight: "#00e572",
+      accentLightR: 0, accentLightG: 229, accentLightB: 114,
+      background: "#0a0a0a",
+      gradientEnd: "#1a1a1a",
+      text: "#ffffff",
+      titleText: "#f0f0f0",
+      softText: "#b0b0b0",
+      buttonText: "#0a0a0a",
+      cardBackground: "#1e1e1e",
+      cardBackgroundAlt: "#282828",
+      glassBackground: "rgba(30, 30, 30, 0.2)",
+      glassBorder: "rgba(255, 255, 255, 0.08)",
+      cardBorder: "rgba(255, 255, 255, 0.05)",
+      nameGradient: true,
+      cardShadow: "0 8px 30px rgba(0, 0, 0, 0.3)", // Example for dark theme
+      cardHoverShadow: "0 15px 40px rgba(0, 0, 0, 0.5)", // Example for dark theme
+      primaryGlow: "rgba(0, 188, 212, 0.6)", // Example for dark theme
+      accentLightGlow: "rgba(0, 229, 114, 0.6)", // Example for dark theme
+      borderRadiusLg: '16px', // Example for dark theme
+      cardHoverBackground: "#2a2a2a", // Example for dark theme
+    };
+  }
+
   return (
-    <PageContainer>
+    <PageContainer
+      theme={theme}
+      variants={pageEntranceVariants} 
+      initial="hidden"
+      animate="visible"
+      exit="exit" 
+    >
       <Content>
         <Header
           variants={headerVariants}
           initial="hidden"
           animate="visible"
+          theme={theme}
         >
           Skills & Technologies
         </Header>
 
+        {/* Use whileInView for staggered animations as sections scroll into view */}
         <motion.div
-          variants={containerVariants}
+          variants={{ visible: { transition: { staggerChildren: 0.1 } } }} 
           initial="hidden"
-          animate="visible"
+          whileInView="visible" 
+          viewport={{ once: true, amount: 0.2 }} 
         >
           {skillCategories.map((cat, i) => (
             <CategorySection key={i} variants={categoryVariants}>
-              <CategoryTitle>{cat.category}</CategoryTitle>
+              <CategoryTitle theme={theme}>{cat.category}</CategoryTitle>
               <SkillsGrid>
                 {cat.skills.map((skill, idx) => (
                   <SkillCard
                     key={idx}
                     variants={skillCardVariants}
-                    whileHover={{ scale: 1.03, boxShadow: "0 12px 40px rgba(0,0,0,0.5)" }}
                     whileTap={{ scale: 0.98 }}
+                    theme={theme}
                   >
-                    {skill.icon}
-                    <SkillName>{skill.name}</SkillName>
-                    <ProgressBar>
+                    <SkillIcon theme={theme}>{skill.icon}</SkillIcon> 
+                    <SkillName theme={theme}>{skill.name}</SkillName>
+                    <ProgressBar theme={theme}>
                       <ProgressFill
                         initial={{ width: 0 }}
                         animate={{ width: `${skill.proficiency}%` }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
+                        theme={theme}
                       />
                     </ProgressBar>
                   </SkillCard>
