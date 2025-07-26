@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 import {
   FaEnvelope,
-  FaPaperPlane,
   FaLinkedinIn,
   FaGithub,
   FaMapMarkerAlt,

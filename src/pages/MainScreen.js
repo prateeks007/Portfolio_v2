@@ -13,7 +13,6 @@ import {
   FaTrophy, // For Achievements
   FaBlog, // For Blog
 } from "react-icons/fa";
-import { FiLoader } from "react-icons/fi"; // For loading spinner
 
 // --- Reusable CSS Mixins ---
 const gradientHighlight = (theme) => css`
@@ -364,41 +363,41 @@ const FeatureDescription = styled(motion.p)`
   }
 `;
 
-// --- Scroll to Top Button (Styled component definition remains) ---
-const ScrollToTopButton = styled(motion.button)`
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
-  background: ${(props) => gradientHighlight(props.theme).background};
-  color: ${(props) => props.theme.buttonText};
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  cursor: pointer;
-  box-shadow: 0 10px 25px ${(props) => props.theme.primaryGlow};
-  z-index: 100;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+// // --- Scroll to Top Button (Styled component definition remains) ---
+// const ScrollToTopButton = styled(motion.button)`
+//   position: fixed;
+//   bottom: 50px;
+//   right: 50px;
+//   background: ${(props) => gradientHighlight(props.theme).background};
+//   color: ${(props) => props.theme.buttonText};
+//   border: none;
+//   border-radius: 50%;
+//   width: 60px;
+//   height: 60px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: 1.8rem;
+//   cursor: pointer;
+//   box-shadow: 0 10px 25px ${(props) => props.theme.primaryGlow};
+//   z-index: 100;
+//   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  &:hover, &:focus {
-    transform: translateY(-8px) scale(1.1);
-    box-shadow: 0 15px 40px ${(props) => props.theme.primaryGlow.replace('rgba(', 'rgba(').replace(', 0.', ', 0.')};
-    outline: 2px solid ${(props) => props.theme.primary}80;
-    outline-offset: 4px;
-  }
+//   &:hover, &:focus {
+//     transform: translateY(-8px) scale(1.1);
+//     box-shadow: 0 15px 40px ${(props) => props.theme.primaryGlow.replace('rgba(', 'rgba(').replace(', 0.', ', 0.')};
+//     outline: 2px solid ${(props) => props.theme.primary}80;
+//     outline-offset: 4px;
+//   }
 
-  @media (max-width: 768px) {
-    width: 50px;
-    height: 50px;
-    font-size: 1.6rem;
-    bottom: 40px;
-    right: 40px;
-  }
-`;
+//   @media (max-width: 768px) {
+//     width: 50px;
+//     height: 50px;
+//     font-size: 1.6rem;
+//     bottom: 40px;
+//     right: 40px;
+//   }
+// `;
 
 // --- Loading State ---
 const LoadingContainer = styled(MainContainer)`
