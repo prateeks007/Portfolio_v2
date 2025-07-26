@@ -12,6 +12,7 @@ import {
   FaCode, // For Skills
   FaTrophy, // For Achievements
   FaBlog, // For Blog
+  FaDownload, // NEW: For Resume Download Icon
 } from "react-icons/fa";
 
 // --- Reusable CSS Mixins ---
@@ -363,42 +364,6 @@ const FeatureDescription = styled(motion.p)`
   }
 `;
 
-// // --- Scroll to Top Button (Styled component definition remains) ---
-// const ScrollToTopButton = styled(motion.button)`
-//   position: fixed;
-//   bottom: 50px;
-//   right: 50px;
-//   background: ${(props) => gradientHighlight(props.theme).background};
-//   color: ${(props) => props.theme.buttonText};
-//   border: none;
-//   border-radius: 50%;
-//   width: 60px;
-//   height: 60px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: 1.8rem;
-//   cursor: pointer;
-//   box-shadow: 0 10px 25px ${(props) => props.theme.primaryGlow};
-//   z-index: 100;
-//   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-
-//   &:hover, &:focus {
-//     transform: translateY(-8px) scale(1.1);
-//     box-shadow: 0 15px 40px ${(props) => props.theme.primaryGlow.replace('rgba(', 'rgba(').replace(', 0.', ', 0.')};
-//     outline: 2px solid ${(props) => props.theme.primary}80;
-//     outline-offset: 4px;
-//   }
-
-//   @media (max-width: 768px) {
-//     width: 50px;
-//     height: 50px;
-//     font-size: 1.6rem;
-//     bottom: 40px;
-//     right: 40px;
-//   }
-// `;
-
 // --- Loading State ---
 const LoadingContainer = styled(MainContainer)`
   justify-content: center;
@@ -507,9 +472,17 @@ const MainScreen = ({ theme, toggleTheme }) => {
     navigate(path);
   };
 
-  // ADDED: Handler for Blog to navigate to a dedicated "Coming Soon" page
+  // Handler for Blog to navigate to a dedicated "Coming Soon" page
   const handleBlogClick = () => {
     navigate("/blog-coming-soon");
+  };
+
+  // REINSTATED: Original Handler for Resume Download
+  const handleOpenResume = () => {
+    window.open(
+      process.env.PUBLIC_URL + "/resume/Resume_Prateek Shetty.pdf",
+      "_blank"
+    );
   };
 
 
@@ -680,9 +653,8 @@ const MainScreen = ({ theme, toggleTheme }) => {
             </FeatureDescription>
           </FeatureCard>
 
-          {/* Corrected: Blog Feature Card now has an onClick handler */}
           <FeatureCard
-            onClick={handleBlogClick} 
+            onClick={handleBlogClick}
             variants={featureCardVariants}
             theme={theme}
           >
@@ -690,6 +662,20 @@ const MainScreen = ({ theme, toggleTheme }) => {
             <FeatureTitle theme={theme}>My Blog</FeatureTitle>
             <FeatureDescription theme={theme}>
               Insights, tutorials, and thoughts on DevOps, tech, and more.
+            </FeatureDescription>
+          </FeatureCard>
+
+          {/* NEW/REINSTATED: Resume Download Feature Card */}
+          <FeatureCard
+            onClick={handleOpenResume} // <-- Using your original handler
+            variants={featureCardVariants}
+            theme={theme}
+          >
+            <FeatureIcon theme={theme}><FaDownload /></FeatureIcon> {/* Using FaDownload */}
+            {/* You could also use FaFileAlt for a document icon: <FaFileAlt /> */}
+            <FeatureTitle theme={theme}>My Resume</FeatureTitle>
+            <FeatureDescription theme={theme}>
+              Download my complete professional resume in PDF format.
             </FeatureDescription>
           </FeatureCard>
         </FeatureCardsContainer>

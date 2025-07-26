@@ -1,3 +1,5 @@
+// src/pages/ExperienceScreen.js
+
 import React, { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { motion, useAnimation } from "framer-motion";
@@ -283,19 +285,21 @@ const sectionTitleVariants = {
 
 // --- Component ---
 
-const ExperienceScreen = () => {
+const ExperienceScreen = ({ theme }) => { // Added theme prop here
   const controls = useAnimation();
   const timelineTitleControls = useAnimation();
 
   // Use Intersection Observer for section titles to animate them as they come into view
   // rather than animating on initial page load if they're far down.
   // This is a common pattern for "even better" user experience.
-  const sectionRef = React.useRef(null);
   const timelineRef = React.useRef(null);
 
   useEffect(() => {
     // Animate the main header and cards immediately on mount
     controls.start("visible");
+
+    // Fix for ESLint warning: Capture current ref value for cleanup
+    const currentTimelineRef = timelineRef.current;
 
     // Observe timeline title for animation when it enters viewport
     const observer = new IntersectionObserver(
@@ -311,17 +315,17 @@ const ExperienceScreen = () => {
       }
     );
 
-    if (timelineRef.current) {
-      observer.observe(timelineRef.current);
+    if (currentTimelineRef) { // Use the captured value
+      observer.observe(currentTimelineRef);
     }
 
     // Cleanup observer on component unmount
     return () => {
-      if (timelineRef.current) {
-        observer.unobserve(timelineRef.current);
+      if (currentTimelineRef) { // Use the captured value in cleanup
+        observer.unobserve(currentTimelineRef);
       }
     };
-  }, [controls, timelineTitleControls]);
+  }, [controls, timelineTitleControls]); // Dependencies are correct
 
   const experiences = [
     {
@@ -395,14 +399,15 @@ const ExperienceScreen = () => {
   ];
 
   return (
-    <PageContainer>
-      <AnimatedBackgroundOverlay />
+    <PageContainer theme={theme}> {/* Pass theme to PageContainer */}
+      <AnimatedBackgroundOverlay theme={theme} /> {/* Pass theme to AnimatedBackgroundOverlay */}
 
       <ContentContainer>
         <Header
           variants={headerVariants}
           initial="hidden"
           animate="visible"
+          theme={theme} 
         >
           My Professional Journey
         </Header>
@@ -413,17 +418,18 @@ const ExperienceScreen = () => {
           animate={controls}
         >
           {experiences.map((exp, index) => (
-            <ExperienceCard key={index} variants={cardVariants}>
+            <ExperienceCard key={index} variants={cardVariants} theme={theme}> {/* Pass theme to ExperienceCard */}
               <ExperienceHeader>
-                <ExperienceTitle>{exp.title}</ExperienceTitle>
-                <ExperienceCompany>{exp.company}</ExperienceCompany>
-                <ExperienceDate>{exp.date}</ExperienceDate>
+                <ExperienceTitle theme={theme}>{exp.title}</ExperienceTitle> {/* Pass theme */}
+                <ExperienceCompany theme={theme}>{exp.company}</ExperienceCompany> {/* Pass theme */}
+                <ExperienceDate theme={theme}>{exp.date}</ExperienceDate> {/* Pass theme */}
               </ExperienceHeader>
               <ResponsibilitiesList>
                 {exp.responsibilities.map((resp, respIndex) => (
                   <ResponsibilityItem
                     key={respIndex}
                     variants={responsibilityItemVariants}
+                    theme={theme} 
                   >
                     {resp}
                   </ResponsibilityItem>
@@ -433,7 +439,7 @@ const ExperienceScreen = () => {
           ))}
         </ExperienceContainer>
 
-        <SectionDivider />
+        <SectionDivider theme={theme} /> {/* Pass theme */}
 
         {/* Use ref for Intersection Observer */}
         <SectionTitle
@@ -441,11 +447,12 @@ const ExperienceScreen = () => {
           variants={sectionTitleVariants}
           initial="hidden"
           animate={timelineTitleControls}
+          theme={theme}
         >
           Career Timeline
         </SectionTitle>
         {/* Make sure your Timeline component also consumes the theme props */}
-        <Timeline events={timelineEvents} />
+        <Timeline events={timelineEvents} theme={theme} /> {/* Pass theme to Timeline */}
       </ContentContainer>
     </PageContainer>
   );
