@@ -11,6 +11,7 @@ import {
   FaBriefcase, // For Experience
   FaCode, // For Skills
   FaTrophy, // For Achievements
+  FaBlog, // For Blog
 } from "react-icons/fa";
 import { FiLoader } from "react-icons/fi"; // For loading spinner
 
@@ -19,8 +20,8 @@ const gradientHighlight = (theme) => css`
   background: linear-gradient(120deg, ${theme.primary} 0%, ${theme.accentLight} 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text; 
-  color: transparent; 
+  background-clip: text;
+  color: transparent;
 `;
 
 // --- Global Font Imports Suggestion (Add this to your public/index.html or App.css) ---
@@ -43,8 +44,8 @@ const MainContainer = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif; 
-  padding: 100px 20px 60px 20px; 
+  font-family: 'Inter', sans-serif;
+  padding: 100px 20px 60px 20px;
   box-sizing: border-box;
   transition: background 0.3s ease, color 0.3s ease; /* Smooth transition for theme change */
 
@@ -68,15 +69,15 @@ const AnimatedBlob = styled(motion.div)`
 // --- Hero Section: The Core Introduction ---
 const HeroSection = styled(motion.section)`
   position: relative;
-  z-index: 1; 
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 1000px; 
+  max-width: 1000px;
   width: 100%;
   gap: 60px; /* Generous spacing for readability */
-  padding: 40px 0; 
+  padding: 40px 0;
 
   @media (max-width: 768px) {
     gap: 50px;
@@ -85,21 +86,21 @@ const HeroSection = styled(motion.section)`
 `;
 
 const ProfileImage = styled(motion.img)`
-  width: 200px; 
+  width: 200px;
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  background: ${(props) => props.theme.cardBackground}; 
+  background: ${(props) => props.theme.cardBackground};
   /* Use theme-defined shadow for cleaner light mode */
-  box-shadow: 
+  box-shadow:
     inset 0 0 15px ${(props) => props.theme.cardShadow.replace('0 5px 20px', '0 0')}, /* Inner shadow from cardShadow base */
     0 0 0 4px ${(props) => props.theme.cardBorder}; /* Subtle ring using cardBorder */
-  margin-bottom: 40px; 
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+  margin-bottom: 40px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   &:hover {
-    transform: scale(1.03); 
-    box-shadow: 
+    transform: scale(1.03);
+    box-shadow:
       inset 0 0 20px ${(props) => props.theme.cardHoverShadow.replace('0 10px 30px', '0 0')},
       0 0 0 5px ${(props) => props.theme.primary}50, /* Slightly more pronounced ring */
       0 0 0 8px ${(props) => props.theme.primaryGlow}; /* Subtle glow on hover */
@@ -113,23 +114,23 @@ const ProfileImage = styled(motion.img)`
 `;
 
 const ProfileName = styled(motion.h1)`
-  font-family: 'Outfit', sans-serif; 
-  font-size: 7.0rem; 
-  font-weight: 900; 
+  font-family: 'Outfit', sans-serif;
+  font-size: 7.0rem;
+  font-weight: 900;
   margin: 0;
-  letter-spacing: -0.09em; 
+  letter-spacing: -0.09em;
   line-height: 1;
-  color: ${(props) => props.theme.titleText}; 
+  color: ${(props) => props.theme.titleText};
   /* Use theme-defined glow for title text */
-  text-shadow: 0 4px 12px ${(props) => props.theme.primaryGlow}; 
+  text-shadow: 0 4px 12px ${(props) => props.theme.primaryGlow};
 
   ${(props) => props.theme.nameGradient && css`
     background: linear-gradient(120deg, ${(props) => props.theme.primary} 0%, ${(props) => props.theme.accentLight} 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    color: transparent; 
-    text-shadow: none; 
+    color: transparent;
+    text-shadow: none;
   `};
 
   @media (max-width: 1200px) {
@@ -149,20 +150,20 @@ const ProfileName = styled(motion.h1)`
 `;
 
 const TaglineText = styled(motion.h2)`
-  font-family: 'Outfit', sans-serif; 
-  font-size: 3.2rem; 
+  font-family: 'Outfit', sans-serif;
+  font-size: 3.2rem;
   font-weight: 600;
   margin: 0;
-  line-height: 1.5; 
+  line-height: 1.5;
   color: ${(props) => props.theme.titleText};
-  min-height: 120px; 
+  min-height: 120px;
   max-width: 950px;
-  opacity: 0.99; 
+  opacity: 0.99;
 
   .Typewriter__wrapper {
     ${(props) => gradientHighlight(props.theme)};
-    font-family: 'Outfit', sans-serif; 
-    font-weight: 600; 
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
   }
   .Typewriter__cursor {
     color: ${(props) => props.theme.primary};
@@ -184,14 +185,14 @@ const TaglineText = styled(motion.h2)`
 `;
 
 const IntroParagraph = styled(motion.p)`
-  font-family: 'Inter', sans-serif; 
-  margin: 0 0 90px 0; 
-  font-size: 1.5rem; 
-  font-weight: 380; 
+  font-family: 'Inter', sans-serif;
+  margin: 0 0 90px 0;
+  font-size: 1.5rem;
+  font-weight: 380;
   color: ${(props) => props.theme.softText};
   opacity: 0.96;
-  line-height: 2.2; 
-  letter-spacing: 0.015em; 
+  line-height: 2.2;
+  letter-spacing: 0.015em;
   max-width: 900px;
   text-align: center;
 
@@ -210,7 +211,7 @@ const PrimaryCTA = styled(motion.div)`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 130px; 
+  margin-bottom: 130px;
 
   @media (max-width: 768px) {
     margin-bottom: 100px;
@@ -248,8 +249,6 @@ const CTAButton = styled(motion.button)`
     box-shadow:
       0 10px 25px ${(props) => props.theme.primaryGlow.replace('rgba(', 'rgba(').replace(', 0.', ', 0.')},
       0 15px 40px ${(props) => props.theme.primaryGlow.replace('rgba(', 'rgba(').replace(', 0.', ', 0.')};
-    /* You might want to adjust the opacity of the glow for hover in light theme,
-       but with 0.05 opacity in primaryGlow, it's already very subtle */
   }
 
   svg {
@@ -258,15 +257,15 @@ const CTAButton = styled(motion.button)`
 `;
 
 
-// --- Feature Cards: Refined for Sleek Aura & Performance ---
+// --- Feature Cards:
 const FeatureCardsContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 35px; 
-  margin-top: 110px; 
+  gap: 35px;
+  margin-top: 110px;
   width: 100%;
-  max-width: 1100px; 
+  max-width: 1100px;
   padding: 0 20px;
   box-sizing: border-box;
 
@@ -277,46 +276,44 @@ const FeatureCardsContainer = styled(motion.div)`
 `;
 
 const FeatureCard = styled(motion.div)`
-  background: ${(props) => props.theme.cardBackground}; 
-  border-radius: ${(props) => props.theme.borderRadiusLg}; /* Use theme for border-radius */
-  padding: 35px 25px; 
-  width: 300px; 
-  min-height: 240px; 
+  background: ${(props) => props.theme.cardBackground};
+  border-radius: ${(props) => props.theme.borderRadiusLg};
+  padding: 35px 25px;
+  width: 300px;
+  min-height: 240px;
   position: relative;
   cursor: pointer;
   text-align: center;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
-  border: 1px solid ${(props) => props.theme.cardBorder}; 
-  /* Use theme-defined card shadow */
-  box-shadow: ${(props) => props.theme.cardShadow}; 
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border: 1px solid ${(props) => props.theme.cardBorder};
+  box-shadow: ${(props) => props.theme.cardShadow};
 
   &:hover, &:focus {
-    transform: translateY(-8px) scale(1.01); 
-    outline: 2px solid ${(props) => props.theme.primary}80; /* Added for accessibility */
+    transform: translateY(-8px) scale(1.01);
+    outline: 2px solid ${(props) => props.theme.primary}80;
     outline-offset: 4px;
-    /* Use theme-defined card hover shadow AND a primary glow */
-    box-shadow: 
+    box-shadow:
       ${(props) => props.theme.cardHoverShadow},
-      0 0 30px ${(props) => props.theme.primaryGlow}; 
-    border-color: ${(props) => props.theme.primary}A0; 
+      0 0 30px ${(props) => props.theme.primaryGlow};
+    border-color: ${(props) => props.theme.primary}A0;
   }
 
   @media (max-width: 480px) {
-    width: 90%; 
+    width: 90%;
     min-height: 220px;
     padding: 30px 20px;
   }
 `;
 
 const FeatureIcon = styled(motion.div)`
-  font-size: 4.5rem; 
+  font-size: 4.5rem;
   color: ${(props) => props.theme.primary};
   margin-bottom: 25px;
-  
+
   ${FeatureCard}:hover & {
-    transform: translateY(-6px) rotate(2deg) scale(1.05); 
-    color: ${(props) => props.theme.accentLight}; 
+    transform: translateY(-6px) rotate(2deg) scale(1.05);
+    color: ${(props) => props.theme.accentLight};
     transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -327,15 +324,15 @@ const FeatureIcon = styled(motion.div)`
 `;
 
 const FeatureTitle = styled(motion.h3)`
-  font-family: 'Outfit', sans-serif; 
-  font-size: 2.0rem; 
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.0rem;
   font-weight: 700;
   margin: 0 0 15px 0;
   color: ${(props) => props.theme.titleText};
   line-height: 1.25;
 
   ${FeatureCard}:hover & {
-    transform: translateY(-4px); 
+    transform: translateY(-4px);
     color: ${(props) => props.theme.primary};
     transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
@@ -349,16 +346,16 @@ const FeatureTitle = styled(motion.h3)`
 `;
 
 const FeatureDescription = styled(motion.p)`
-  font-family: 'Inter', sans-serif; 
-  font-size: 1.1rem; 
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
   color: ${(props) => props.theme.softText};
   line-height: 1.7;
   opacity: 0.96;
   letter-spacing: 0.005em;
 
   ${FeatureCard}:hover & {
-    opacity: 1; 
-    transform: translateY(4px); 
+    opacity: 1;
+    transform: translateY(4px);
     transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
@@ -368,30 +365,29 @@ const FeatureDescription = styled(motion.p)`
 `;
 
 // --- Scroll to Top Button (Styled component definition remains) ---
-// This button is likely managed globally now, but its styles should align.
 const ScrollToTopButton = styled(motion.button)`
   position: fixed;
-  bottom: 50px; 
+  bottom: 50px;
   right: 50px;
   background: ${(props) => gradientHighlight(props.theme).background};
   color: ${(props) => props.theme.buttonText};
   border: none;
   border-radius: 50%;
-  width: 60px; 
+  width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
   cursor: pointer;
-  box-shadow: 0 10px 25px ${(props) => props.theme.primaryGlow}; /* Use theme glow */
-  z-index: 100; 
+  box-shadow: 0 10px 25px ${(props) => props.theme.primaryGlow};
+  z-index: 100;
   transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 
   &:hover, &:focus {
-    transform: translateY(-8px) scale(1.1); 
-    box-shadow: 0 15px 40px ${(props) => props.theme.primaryGlow.replace('rgba(', 'rgba(').replace(', 0.', ', 0.')}; /* Stronger glow on hover */
-    outline: 2px solid ${(props) => props.theme.primary}80; /* Added for accessibility */
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 15px 40px ${(props) => props.theme.primaryGlow.replace('rgba(', 'rgba(').replace(', 0.', ', 0.')};
+    outline: 2px solid ${(props) => props.theme.primary}80;
     outline-offset: 4px;
   }
 
@@ -411,7 +407,7 @@ const LoadingContainer = styled(MainContainer)`
 `;
 
 const LoadingSpinner = styled(motion.div)`
-  border: 8px solid ${(props) => `${props.theme.primary}30`}; 
+  border: 8px solid ${(props) => `${props.theme.primary}30`};
   border-top: 8px solid ${(props) => props.theme.primary};
   border-radius: 50%;
   width: 90px;
@@ -432,10 +428,10 @@ const pageEntranceVariants = {
     scale: 1,
     y: 0,
     transition: {
-      duration: 1.0, 
+      duration: 1.0,
       ease: "easeOut",
       when: "beforeChildren",
-      staggerChildren: 0.15, 
+      staggerChildren: 0.15,
     },
   },
   exit: {
@@ -453,11 +449,11 @@ const heroItemVariants = {
     y: 0,
     scale: 1,
     transition: {
-      type: "spring", 
-      stiffness: 70, 
+      type: "spring",
+      stiffness: 70,
       damping: 15,
       mass: 0.9,
-      delay: 0.3 
+      delay: 0.3
     },
   },
 };
@@ -470,7 +466,7 @@ const featureCardVariants = {
     scale: 1,
     transition: {
       type: "spring",
-      stiffness: 60, 
+      stiffness: 60,
       damping: 12,
       mass: 0.7,
     },
@@ -479,29 +475,29 @@ const featureCardVariants = {
 
 // Optimized function for blob animation values - minimal movement, no scale/rotate
 const getBlobAnimation = (i) => ({
-  opacity: i % 2 === 0 ? 0.012 : 0.008, 
-  x: i % 2 === 0 ? ["-5%", "5%", "-5%"] : ["5%", "-5%", "5%"], 
-  y: i % 3 === 0 ? ["-5%", "5%", "-5%"] : ["5%", "-5%", "5%"], 
+  opacity: i % 2 === 0 ? 0.012 : 0.008,
+  x: i % 2 === 0 ? ["-5%", "5%", "-5%"] : ["5%", "-5%", "5%"],
+  y: i % 3 === 0 ? ["-5%", "5%", "-5%"] : ["5%", "-5%", "5%"],
   transition: {
-    duration: 180 + i * 40, 
+    duration: 180 + i * 40,
     repeat: Infinity,
     repeatType: "loop",
-    ease: "linear", 
-    delay: i * 2, 
+    ease: "linear",
+    delay: i * 2,
   },
 });
 
 
 // --- Main Screen Component ---
-// This component should receive 'theme' and 'toggleTheme' from a parent ThemeProvider context
-const MainScreen = ({ theme, toggleTheme }) => { 
+const MainScreen = ({ theme, toggleTheme }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const loadTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000); 
+    }, 2000);
 
     return () => {
       clearTimeout(loadTimer);
@@ -511,6 +507,12 @@ const MainScreen = ({ theme, toggleTheme }) => {
   const handleNavigation = (path) => {
     navigate(path);
   };
+
+  // ADDED: Handler for Blog to navigate to a dedicated "Coming Soon" page
+  const handleBlogClick = () => {
+    navigate("/blog-coming-soon");
+  };
+
 
   // Defensive theme check and default values (should align with your App.js light/dark themes)
   if (!theme) {
@@ -525,7 +527,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
       text: "#ffffff",
       titleText: "#f0f0f0",
       softText: "#b0b0b0",
-      buttonText: "#0a0a0a",
+      buttonText: "#ffffff", // Changed to white as per your App.js theme
       cardBackground: "#1e1e1e",
       cardBackgroundAlt: "#282828",
       glassBackground: "rgba(30, 30, 30, 0.2)",
@@ -572,14 +574,14 @@ const MainScreen = ({ theme, toggleTheme }) => {
       initial="hidden"
       animate="visible"
       exit="exit"
-      theme={theme} 
+      theme={theme}
     >
       {/* Reduced to 2 blobs for performance, ensure they cover the screen subtly */}
       <AnimatedBlob
         $color={theme.primary}
         $opacity={getBlobAnimation(0).opacity}
         style={{ top: "10%", left: "5%", width: "1000px", height: "1000px" }}
-        animate={{ 
+        animate={{
           x: getBlobAnimation(0).x,
           y: getBlobAnimation(0).y,
           opacity: getBlobAnimation(0).opacity,
@@ -590,7 +592,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
         $color={theme.accentLight}
         $opacity={getBlobAnimation(1).opacity}
         style={{ bottom: "10%", right: "5%", width: "1200px", height: "1200px" }}
-        animate={{ 
+        animate={{
           x: getBlobAnimation(1).x,
           y: getBlobAnimation(1).y,
           opacity: getBlobAnimation(1).opacity,
@@ -605,7 +607,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
           variants={heroItemVariants}
           theme={theme}
         />
-        
+
         <ProfileName variants={heroItemVariants} theme={theme}>
           PRATEEK SHETTY
         </ProfileName>
@@ -672,17 +674,28 @@ const MainScreen = ({ theme, toggleTheme }) => {
             variants={featureCardVariants}
             theme={theme}
           >
-            <FeatureIcon theme={theme}><FaTrophy /></FeatureIcon>
+            <FeatureIcon theme={theme}><FaTrophy/></FeatureIcon>
             <FeatureTitle theme={theme}>My Milestones</FeatureTitle>
             <FeatureDescription theme={theme}>
               Discover my certifications, awards, and project successes.
             </FeatureDescription>
           </FeatureCard>
+
+          {/* Corrected: Blog Feature Card now has an onClick handler */}
+          <FeatureCard
+            onClick={handleBlogClick} 
+            variants={featureCardVariants}
+            theme={theme}
+          >
+            <FeatureIcon theme={theme}><FaBlog /></FeatureIcon>
+            <FeatureTitle theme={theme}>My Blog</FeatureTitle>
+            <FeatureDescription theme={theme}>
+              Insights, tutorials, and thoughts on DevOps, tech, and more.
+            </FeatureDescription>
+          </FeatureCard>
         </FeatureCardsContainer>
       </HeroSection>
 
-      {/* The ScrollToTopButton block was removed from here to eliminate the duplicate on the main page.
-          The global ScrollToTop component (likely in App.js or Layout.js) should now be the sole manager. */}
     </MainContainer>
   );
 };

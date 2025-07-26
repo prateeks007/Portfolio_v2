@@ -15,16 +15,15 @@ import SkillScreen from "./pages/SkillScreen";
 import AchievementScreen from "./pages/AchievementScreen";
 import ExperienceScreen from "./pages/ExperienceScreen";
 import ContactScreen from "./pages/ContactScreen";
-// import ComingSoon from "./components/ComingSoon"; // REMOVED - as it doesn't exist
+import ComingSoonPage from "./pages/ComingSoonPage"; // <-- Ensure this import is here and correct
 import Layout from "./components/Layout";
-import Popup from "./components/Popup";
 import ThemeToggle from "./components/ThemeToggle";
 import ScrollProgress from "./components/ScrollProgress";
 import ScrollToTop from "./components/ScrollToTop";
 import { GlobalFonts } from "./utils/fontLoader";
 import "./App.css";
 
-// --- UPDATED THEME DEFINITIONS ---
+// --- THEME DEFINITIONS (Keeping your latest provided definitions) ---
 const lightTheme = {
   // Core colors
   primary: "#00bcd4", // Cyan
@@ -52,7 +51,7 @@ const lightTheme = {
   dateText: "#6C757D",
   responsibilityText: "#6C757D",
   bulletColor: "#00bcd4",
-  buttonText: "#ffffff", // This is correct if the button's background is colored
+  buttonText: "#ffffff",
 
   // Dividers & Glass
   dividerColor: "rgba(0, 188, 212, 0.1)",
@@ -100,7 +99,7 @@ const darkTheme = {
   dateText: "#b0b0b0",
   responsibilityText: "#b0b0b0",
   bulletColor: "#00bcd4",
-  buttonText: "#ffffff", // This is correct for dark mode
+  buttonText: "#ffffff",
 
   // Dividers & Glass
   dividerColor: "rgba(0, 188, 212, 0.3)",
@@ -277,7 +276,8 @@ function AnimatedRoutes({ theme, toggleTheme }) {
             </Layout>
           }
         />
-        {/* REMOVED: Catch-all route for ComingSoon */}
+        {/* CORRECTED POSITION: The ComingSoonPage route should be directly here */}
+        <Route path="/blog-coming-soon" element={<ComingSoonPage theme={theme} />} />
       </Routes>
     </AnimatePresence>
   );
@@ -286,7 +286,6 @@ function AnimatedRoutes({ theme, toggleTheme }) {
 // --- Main App Component ---
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [isPopupVisible, setIsPopupVisible] = useState(true);
 
   const toggleTheme = () => {
     setIsDarkMode((prevMode) => !prevMode);
@@ -309,16 +308,6 @@ function App() {
           <ThemeToggle isDark={isDarkMode} toggleTheme={toggleTheme} />
           <ScrollProgress theme={currentTheme} />
           <AnimatedRoutes theme={currentTheme} toggleTheme={toggleTheme} />
-          {isPopupVisible && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Popup onClose={() => setIsPopupVisible(false)} />
-            </motion.div>
-          )}
         </motion.div>
       </ThemeProvider>
     </Router>
