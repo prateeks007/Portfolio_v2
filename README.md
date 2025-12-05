@@ -1,24 +1,28 @@
 # Prateek Shetty's Portfolio
 
-A modern, responsive portfolio website built with React, showcasing my skills, experience, and achievements in software development and DevOps.
+A modern, responsive portfolio website built with React, showcasing my DevOps expertise, projects, and professional journey.
 
 ## 🚀 Features
 
--   **Modern UI/UX**: Clean, responsive design with smooth animations and a dual light/dark theme toggle.
+-   **Modern UI/UX**: Clean, responsive design with smooth Framer Motion animations and dual light/dark theme toggle
 -   **Interactive Sections**:
-    -   Skills & Technologies
-    -   Professional Experience
-    -   Achievements
-    -   **Blog (Coming Soon)**: A dedicated section for insights, tutorials, and tech thoughts.
+    -   Skills & Technologies (Python, AWS, Terraform, Kubernetes, Docker)
+    -   Professional Experience (DevOps Engineer journey)
+    -   Featured Projects (PulseWatch, QueryForge, CreatiVision)
+    -   Achievements & Awards
+    -   Blog Integration (Hashnode & Dev.to)
     -   Resume Download
-    -   Contact Form
+    -   Contact Form (Discord webhook integration)
 
 ## 🛠️ Built With
 
--   React.js
--   Styled Components
--   Framer Motion
--   React Router
+-   **React.js** - Frontend framework
+-   **Styled Components** - CSS-in-JS styling
+-   **Framer Motion** - Smooth animations
+-   **React Router** - Client-side routing
+-   **React Icons** - Icon library
+-   **Discord Webhook** - Contact form backend
+-   **Google Analytics** - Traffic tracking
 
 ## 🏃‍♂️ Running Locally
 
@@ -53,25 +57,12 @@ This will create an optimized production build in the `build` folder.
 
 ## 🎨 Color Scheme
 
-This portfolio features a dynamic light and dark mode, leveraging a consistent brand palette across both themes.
+Dynamic light and dark mode with consistent brand palette:
 
-### Dark Theme (Default)
-
-  - **Primary Accent**: `#00bcd4` (Cyan)
-  - **Secondary Accent**: `#00e572` (Vibrant Green)
-  - **Backgrounds**: `#0a0a0a` (Deep Black), `#1a1a1a`, `#1e1e1e` (Dark Card Background)
-  - **Text**: `#f0f0f0` (Light Grey for titles), `#b0b0b0` (Softer Grey for body)
-  - **Button Text**: `#ffffff` (White)
-  - **Glow Effects**: Prominent cyan and green glows
-
-### Light Theme
-
-  - **Primary Accent**: `#00bcd4` (Cyan)
-  - **Secondary Accent**: `#00e572` (Vibrant Green)
-  - **Backgrounds**: `#f0f2f5` (Soft Off-white), `#e8ecf1`, `#ffffff` (White Card Background)
-  - **Text**: `#222222` (Dark Grey for titles), `#6C757D` (Mid Grey for body)
-  - **Button Text**: `#ffffff` (White)
-  - **Glow Effects**: Subtle, light-mode friendly glows
+-   **Primary**: `#00bcd4` (Cyan)
+-   **Secondary**: `#00e572` (Vibrant Green)
+-   **Dark Mode**: Deep blacks with prominent glows
+-   **Light Mode**: Soft off-whites with subtle shadows
 
 ## 📱 Responsive Design
 
@@ -81,9 +72,18 @@ This portfolio features a dynamic light and dark mode, leveraging a consistent b
 
 ## 🔗 Connect With Me
 
-  - [LinkedIn](https://linkedin.com/in/prateek-shetty-7375031a6/)
-  - [GitHub](https://github.com/prateeks007)
-  - Email: prateekshettybdmi@gmail.com
+-   [LinkedIn](https://linkedin.com/in/prateek-shetty-7375031a6/)
+-   [GitHub](https://github.com/prateeks007)
+-   [Hashnode Blog](https://hashnode.com/@prateeks007)
+-   [Dev.to Blog](https://dev.to/prateeks007)
+-   Email: prateekshettybdmi@gmail.com
+
+## 📊 Analytics & Performance
+
+-   **Google Analytics**: Integrated for traffic tracking
+-   **SEO Optimized**: Meta tags, Open Graph, Twitter Cards
+-   **Security**: 0 vulnerabilities, Discord webhook for contact form
+-   **Performance**: Optimized animations, lazy loading ready
 
 
 ```

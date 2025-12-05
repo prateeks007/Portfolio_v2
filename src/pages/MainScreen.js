@@ -604,7 +604,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
         </TaglineText>
 
         <IntroParagraph variants={heroItemVariants} theme={theme}>
-          DevOps Engineer at EOX Vantage, architecting AWS production infrastructure with Terraform and managing 20+ microservices on Kubernetes. Specialized in cloud cost optimization, security automation, and CI/CD pipelines. PES University CS graduate (2023) passionate about building scalable, efficient systems. Off-duty, I channel the same drive into football.
+          DevOps Engineer at EOX Vantage, architecting AWS production infrastructure with Terraform and managing 20+ microservices on Kubernetes. Specialized in cloud cost optimization, security automation, and CI/CD pipelines. PES University CS graduate (2023) passionate about building scalable, efficient systems. When I'm not optimizing infrastructure, you'll find me on the football pitch.
         </IntroParagraph>
 
         <PrimaryCTA>
