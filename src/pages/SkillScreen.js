@@ -22,10 +22,16 @@ import {
 } from "react-icons/fa";
 import {
   SiJavascript,
-  SiRuby,
   SiKubernetes,
   SiMysql,
   SiPostgresql,
+  SiGo,
+  SiGnubash,
+  SiVuedotjs,
+  SiFlask,
+  SiTerraform,
+  SiCircleci,
+  SiMongodb,
 } from "react-icons/si";
 import { MdSecurity, MdStorage } from "react-icons/md";
 
@@ -310,37 +316,44 @@ const skillCategories = [
   {
     category: "Programming Languages",
     skills: [
-      { name: "Python", icon: <FaPython />, proficiency: 80 },
-      { name: "JavaScript", icon: <SiJavascript />, proficiency: 50 },
-      { name: "Ruby", icon: <SiRuby />, proficiency: 20 },
+      { name: "Python", icon: <FaPython />, proficiency: 85 },
+      { name: "JavaScript", icon: <SiJavascript />, proficiency: 70 },
+      { name: "Go", icon: <SiGo />, proficiency: 65 },
+      { name: "SQL", icon: <FaDatabase />, proficiency: 75 },
+      { name: "Bash/Shell", icon: <SiGnubash />, proficiency: 80 },
     ],
   },
   {
     category: "Web Technologies",
     skills: [
-      { name: "React", icon: <FaReact />, proficiency: 45 },
-      { name: "Node.js", icon: <FaNodeJs />, proficiency: 55 },
-      { name: "HTML5", icon: <FaHtml5 />, proficiency: 60 },
-      { name: "CSS3", icon: <FaCss3Alt />, proficiency: 55 },
+      { name: "React", icon: <FaReact />, proficiency: 60 },
+      { name: "Vue.js", icon: <SiVuedotjs />, proficiency: 65 },
+      { name: "Node.js", icon: <FaNodeJs />, proficiency: 65 },
+      { name: "Flask", icon: <SiFlask />, proficiency: 70 },
+      { name: "HTML5", icon: <FaHtml5 />, proficiency: 75 },
+      { name: "CSS3", icon: <FaCss3Alt />, proficiency: 70 },
     ],
   },
   {
     category: "DevOps & Cloud",
     skills: [
-      { name: "Docker", icon: <FaDocker />, proficiency: 90 },
+      { name: "Docker", icon: <FaDocker />, proficiency: 95 },
       { name: "Kubernetes", icon: <SiKubernetes />, proficiency: 90 },
-      { name: "Jenkins", icon: <FaJenkins />, proficiency: 70 },
+      { name: "Terraform", icon: <SiTerraform />, proficiency: 85 },
       { name: "Git", icon: <FaGit />, proficiency: 95 },
       { name: "GitHub Actions", icon: <FaGithub />, proficiency: 90 },
-      { name: "AWS", icon: <FaAws />, proficiency: 75 },
+      { name: "AWS", icon: <FaAws />, proficiency: 85 },
+      { name: "Jenkins", icon: <FaJenkins />, proficiency: 70 },
+      { name: "CircleCI", icon: <SiCircleci />, proficiency: 75 },
       { name: "Elasticsearch", icon: <MdStorage />, proficiency: 85 },
     ],
   },
   {
     category: "Databases",
     skills: [
+      { name: "MongoDB Atlas", icon: <SiMongodb />, proficiency: 80 },
+      { name: "PostgreSQL", icon: <SiPostgresql />, proficiency: 75 },
       { name: "MySQL", icon: <SiMysql />, proficiency: 75 },
-      { name: "PostgreSQL", icon: <SiPostgresql />, proficiency: 70 },
     ],
   },
   {

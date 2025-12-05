@@ -15,7 +15,8 @@ import SkillScreen from "./pages/SkillScreen";
 import AchievementScreen from "./pages/AchievementScreen";
 import ExperienceScreen from "./pages/ExperienceScreen";
 import ContactScreen from "./pages/ContactScreen";
-import ComingSoonPage from "./pages/ComingSoonPage"; // <-- Ensure this import is here and correct
+import ProjectsScreen from "./pages/ProjectsScreen";
+import ComingSoonPage from "./pages/ComingSoonPage";
 import Layout from "./components/Layout";
 import ThemeToggle from "./components/ThemeToggle";
 import ScrollProgress from "./components/ScrollProgress";
@@ -276,7 +277,21 @@ function AnimatedRoutes({ theme, toggleTheme }) {
             </Layout>
           }
         />
-        {/* CORRECTED POSITION: The ComingSoonPage route should be directly here */}
+        <Route
+          path="/projects"
+          element={
+            <Layout theme={theme} toggleTheme={toggleTheme}>
+              <motion.div
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageTransition}
+              >
+                <ProjectsScreen theme={theme} toggleTheme={toggleTheme} />
+              </motion.div>
+            </Layout>
+          }
+        />
         <Route path="/blog-coming-soon" element={<ComingSoonPage theme={theme} />} />
       </Routes>
     </AnimatePresence>

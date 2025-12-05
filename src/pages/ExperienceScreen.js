@@ -329,15 +329,28 @@ const ExperienceScreen = ({ theme }) => { // Added theme prop here
 
   const experiences = [
     {
+      title: "DevOps Engineer",
+      company: "EOX Vantage",
+      date: "APR 2025 – Present",
+      responsibilities: [
+        "Architected & deployed AWS production infrastructure using Terraform (VPC, ECS Fargate, RDS, Redis, S3, CloudFront, ALB/NLB, IAM)",
+        "Reduced S3 storage by ~80 TB, saving ~$1500/month in AWS costs through lifecycle optimization",
+        "Implemented reusable GitHub deployment template, reducing setup time by 60% across environments",
+        "Centralized security headers at Ingress controller, improving audit compliance by 100%",
+        "Diagnosed and resolved complex AWS networking issues, reducing production downtime",
+      ],
+    },
+    {
       title: "Junior DevOps Engineer",
       company: "EOX Vantage",
-      date: "AUG 2023 – Present",
+      date: "AUG 2023 – MAR 2025",
       responsibilities: [
-        "Implemented Elasticsearch for enhanced logging and monitoring architecture",
-        "Deployed Wazuh SIEM solution across multiple servers",
-        "Implemented GitHub Actions for CI/CD processes",
-        "Regularly conduct Dynamic Application Security Testing (DAST)",
-        "Developed security scripts for vulnerability scanning",
+        "Managed Amazon EKS clusters supporting 20+ microservices, improving deployment reliability by ~40%",
+        "Implemented centralized logging with Elasticsearch + Fleet agents, improving troubleshooting speed by ~3×",
+        "Deployed and managed Wazuh SIEM for real-time threat detection and security monitoring",
+        "Led transition to GitHub Actions with integrated security automation (Snyk, Semgrep)",
+        "Conducted DAST using OWASP ZAP, Burp Suite, sqlmap, and Metasploit",
+        "Automated vulnerability scanning, reducing manual security testing time by ~70%",
       ],
     },
     {
@@ -345,11 +358,9 @@ const ExperienceScreen = ({ theme }) => { // Added theme prop here
       company: "EOX Vantage",
       date: "JAN 2023 – AUG 2023",
       responsibilities: [
-        "Gained experience with JavaScript, Ruby, and Ruby on Rails",
-        "Migrated client project to company's low code platform",
-        "Conducted pen-testing using ZAP, Burp Suite, and sqlmap",
-        "Implemented Circle CI for continuous integration",
-        "Explored Jenkins, Terraform, and Ansible",
+        "Performed regular pentesting (ZAP/Burp) identifying multiple security issues early in development",
+        "Implemented CI using CircleCI for production workloads",
+        "Improved deployment reliability for internal applications",
       ],
     },
     {
@@ -373,10 +384,16 @@ const ExperienceScreen = ({ theme }) => { // Added theme prop here
 
   const timelineEvents = [
     {
+      year: "2025",
+      title: "DevOps Engineer",
+      organization: "EOX Vantage",
+      description: "AWS infrastructure, Terraform, cost optimization",
+    },
+    {
       year: "2023",
       title: "Junior DevOps Engineer",
       organization: "EOX Vantage",
-      description: "Implementing security solutions and CI/CD pipelines",
+      description: "Kubernetes, EKS, security automation, CI/CD",
     },
     {
       year: "2023",

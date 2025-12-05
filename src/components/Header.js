@@ -185,6 +185,12 @@ const Header = () => {
               Experience
             </NavLink>
             <NavLink
+              to="/projects"
+              className={isActive("/projects") ? "active" : ""}
+            >
+              Projects
+            </NavLink>
+            <NavLink
               to="/achievements"
               className={isActive("/achievements") ? "active" : ""}
             >
@@ -222,6 +228,12 @@ const Header = () => {
           className={isActive("/experience") ? "active" : ""}
         >
           Experience
+        </MobileNavLink>
+        <MobileNavLink
+          to="/projects"
+          className={isActive("/projects") ? "active" : ""}
+        >
+          Projects
         </MobileNavLink>
         <MobileNavLink
           to="/achievements"
