@@ -4,21 +4,24 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Run a script
+      - name: Install and Build
         run: |
-          git config user.email "prateekshettybdmi@gmail.com"
-          git config user.name "Prateek"
-          git config remote.origin.url "https://${{ secrets.GHPAT }}@github.com/prateeks007/Portfolio_v2.git"
           npm install
-          npm run deploy
+          npm run build
         env:
-          GITHUB_TOKEN: ${{ secrets.GHPAT }}
           CI: false
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GHPAT }}
+          publish_dir: ./build
