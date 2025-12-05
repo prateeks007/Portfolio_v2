@@ -8,11 +8,12 @@ import { Typewriter } from "react-simple-typewriter";
 
 import {
   FaEnvelope,
-  FaBriefcase, // For Experience
-  FaCode, // For Skills
-  FaTrophy, // For Achievements
-  FaBlog, // For Blog
-  FaDownload, // NEW: For Resume Download Icon
+  FaBriefcase,
+  FaCode,
+  FaTrophy,
+  FaBlog,
+  FaDownload,
+  FaProjectDiagram,
 } from "react-icons/fa";
 
 // --- Reusable CSS Mixins ---
@@ -587,10 +588,10 @@ const MainScreen = ({ theme, toggleTheme }) => {
         <TaglineText variants={heroItemVariants} theme={theme}>
           <Typewriter
             words={[
-              "Innovating at the Intersection of Code & Infrastructure 🚀",
-              "A DevOps Engineer & Systems Builder",
-              "Passionately Automating for Scalability & Reliability ⚙️",
-              "Kubernetes • Docker • AWS • Terraform • CI/CD Expert ☁️",
+              "DevOps Engineer Building Scalable Cloud Infrastructure 🚀",
+              "AWS • Terraform • Kubernetes • Python Expert ☁️",
+              "Saved $1500/month through AWS Cost Optimization 💰",
+              "Automating Security & CI/CD at Scale ⚙️",
               "Beyond the Keyboard: Living the Beautiful Game ⚽",
             ]}
             loop={0}
@@ -603,7 +604,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
         </TaglineText>
 
         <IntroParagraph variants={heroItemVariants} theme={theme}>
-          As a 2023 Computer Science graduate from PES University, I engineer and optimize robust, scalable solutions. My expertise spans cloud infrastructure, container orchestration, and continuous delivery, transforming complex systems into seamless, efficient workflows. Off-duty, I channel the same drive and precision into my passion for football.
+          DevOps Engineer at EOX Vantage, architecting AWS production infrastructure with Terraform and managing 20+ microservices on Kubernetes. Specialized in cloud cost optimization, security automation, and CI/CD pipelines. PES University CS graduate (2023) passionate about building scalable, efficient systems. Off-duty, I channel the same drive into football.
         </IntroParagraph>
 
         <PrimaryCTA>
@@ -642,6 +643,18 @@ const MainScreen = ({ theme, toggleTheme }) => {
           </FeatureCard>
 
           <FeatureCard
+            onClick={() => handleNavigation("/projects")}
+            variants={featureCardVariants}
+            theme={theme}
+          >
+            <FeatureIcon theme={theme}><FaProjectDiagram /></FeatureIcon>
+            <FeatureTitle theme={theme}>My Projects</FeatureTitle>
+            <FeatureDescription theme={theme}>
+              Explore my side projects: monitoring tools, RAG platforms, and AI apps.
+            </FeatureDescription>
+          </FeatureCard>
+
+          <FeatureCard
             onClick={() => handleNavigation("/achievements")}
             variants={featureCardVariants}
             theme={theme}
@@ -649,7 +662,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
             <FeatureIcon theme={theme}><FaTrophy/></FeatureIcon>
             <FeatureTitle theme={theme}>My Milestones</FeatureTitle>
             <FeatureDescription theme={theme}>
-              Discover my certifications, awards, and project successes.
+              Discover my certifications, awards, and hackathon wins.
             </FeatureDescription>
           </FeatureCard>
 
@@ -665,14 +678,12 @@ const MainScreen = ({ theme, toggleTheme }) => {
             </FeatureDescription>
           </FeatureCard>
 
-          {/* NEW/REINSTATED: Resume Download Feature Card */}
           <FeatureCard
-            onClick={handleOpenResume} // <-- Using your original handler
+            onClick={handleOpenResume}
             variants={featureCardVariants}
             theme={theme}
           >
-            <FeatureIcon theme={theme}><FaDownload /></FeatureIcon> {/* Using FaDownload */}
-            {/* You could also use FaFileAlt for a document icon: <FaFileAlt /> */}
+            <FeatureIcon theme={theme}><FaDownload /></FeatureIcon>
             <FeatureTitle theme={theme}>My Resume</FeatureTitle>
             <FeatureDescription theme={theme}>
               Download my complete professional resume in PDF format.

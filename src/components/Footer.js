@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { FaLinkedinIn } from "react-icons/fa";
+import { FaLinkedinIn, FaHashnode, FaDev } from "react-icons/fa";
 import { AiFillGithub } from "react-icons/ai";
 
 const Footer = () => {
@@ -26,6 +26,26 @@ const Footer = () => {
           className="text-white text-2xl transition-colors hover:text-gray-100"
         >
           <AiFillGithub />
+        </motion.a>
+        <motion.a
+          href="https://hashnode.com/@prateeks007"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.15 }}
+          className="text-white text-2xl transition-colors hover:text-gray-100"
+        >
+          <FaHashnode />
+        </motion.a>
+        <motion.a
+          href="https://dev.to/prateeks007"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.15 }}
+          className="text-white text-2xl transition-colors hover:text-gray-100"
+        >
+          <FaDev />
         </motion.a>
       </div>
     </footer>

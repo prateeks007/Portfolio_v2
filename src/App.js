@@ -16,7 +16,6 @@ import AchievementScreen from "./pages/AchievementScreen";
 import ExperienceScreen from "./pages/ExperienceScreen";
 import ContactScreen from "./pages/ContactScreen";
 import ProjectsScreen from "./pages/ProjectsScreen";
-import ComingSoonPage from "./pages/ComingSoonPage";
 import Layout from "./components/Layout";
 import ThemeToggle from "./components/ThemeToggle";
 import ScrollProgress from "./components/ScrollProgress";
@@ -292,7 +291,6 @@ function AnimatedRoutes({ theme, toggleTheme }) {
             </Layout>
           }
         />
-        <Route path="/blog-coming-soon" element={<ComingSoonPage theme={theme} />} />
       </Routes>
     </AnimatePresence>
   );

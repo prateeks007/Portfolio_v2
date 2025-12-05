@@ -317,10 +317,10 @@ const skillCategories = [
     category: "Programming Languages",
     skills: [
       { name: "Python", icon: <FaPython />, proficiency: 85 },
-      { name: "JavaScript", icon: <SiJavascript />, proficiency: 70 },
-      { name: "Go", icon: <SiGo />, proficiency: 65 },
-      { name: "SQL", icon: <FaDatabase />, proficiency: 75 },
       { name: "Bash/Shell", icon: <SiGnubash />, proficiency: 80 },
+      { name: "SQL", icon: <FaDatabase />, proficiency: 75 },
+      { name: "JavaScript", icon: <SiJavascript />, proficiency: 40 },
+      { name: "Go", icon: <SiGo />, proficiency: 25 },
     ],
   },
   {
