@@ -23,6 +23,8 @@ import ScrollToTop from "./components/ScrollToTop";
 import { GlobalFonts } from "./utils/fontLoader";
 import "./App.css";
 
+
+
 // --- THEME DEFINITIONS (Keeping your latest provided definitions) ---
 const lightTheme = {
   // Core colors
