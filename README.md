@@ -1,6 +1,6 @@
 # Prateek Shetty's Portfolio
 
-A modern, responsive portfolio website built with React, showcasing my DevOps expertise, projects, and professional journey.
+A modern, responsive portfolio website built with React, showcasing my skills, experience, and achievements in software development and DevOps.
 
 ## 🚀 Features
 
@@ -84,6 +84,7 @@ Dynamic light and dark mode with consistent brand palette:
 -   **SEO Optimized**: Meta tags, Open Graph, Twitter Cards
 -   **Security**: 0 vulnerabilities, Discord webhook for contact form
 -   **Performance**: Optimized animations, lazy loading ready
+
 
 
 ```
