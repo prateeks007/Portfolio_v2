@@ -1,34 +1,24 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
     branches:
       - main
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
+      - name: Run a script
+        run: |
+          git config user.email "prateekshettybdmi@gmail.com"
+          git config user.name "Prateek"
+          git config remote.origin.url "https://${{ secrets.GHPAT }}@github.com/prateeks007/Portfolio_v2.git"
+          npm install
+          npm run deploy
         env:
+          GITHUB_TOKEN: ${{ secrets.GHPAT }}
           CI: false
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.GHPAT }}
-          publish_dir: ./build
