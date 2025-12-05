@@ -6,7 +6,6 @@ import {
   FaLinkedinIn,
   FaGithub,
   FaMapMarkerAlt,
-  FaArrowRight,
   FaDiscord,
 } from "react-icons/fa";
 import { FiLoader } from "react-icons/fi";

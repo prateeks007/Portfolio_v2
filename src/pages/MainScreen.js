@@ -473,12 +473,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
     navigate(path);
   };
 
-  // Handler for Blog to navigate to a dedicated "Coming Soon" page
-  const handleBlogClick = () => {
-    navigate("/blog-coming-soon");
-  };
-
-  // REINSTATED: Original Handler for Resume Download
+  // Handler for Resume Download
   const handleOpenResume = () => {
     window.open(
       process.env.PUBLIC_URL + "/resume/Resume_Prateek Shetty.pdf",

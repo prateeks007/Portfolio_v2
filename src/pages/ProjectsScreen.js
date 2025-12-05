@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { motion, useAnimation } from "framer-motion";
-import { FaGithub, FaExternalLinkAlt, FaDocker, FaAws } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaDocker } from "react-icons/fa";
 import { SiGo, SiMongodb, SiPython, SiVuedotjs, SiFlask, SiGooglecloud } from "react-icons/si";
 
 const subtleShiftBackground = keyframes`
