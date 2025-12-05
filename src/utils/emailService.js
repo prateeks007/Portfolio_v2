@@ -1,61 +1,60 @@
-// We can't use Resend directly from the browser due to CORS restrictions
-// Instead, we'll use a simple fetch to a serverless function or mock the email sending for development
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1446484277045887118/bqnVEJqms_pD-LERkxT9yvD0YHM2FZ50fsjNCsvXMEIsAvnDviGHpnkk3ZsIc12jMYxH";
 
 /**
- * Send an email using a serverless function or mock for development
- * @param {Object} options - Email options
- * @param {string} options.to - Recipient email address
- * @param {string} options.subject - Email subject
- * @param {string} options.html - Email HTML content
- * @param {string} [options.from] - Sender email
- * @returns {Promise} - Promise resolving to the email send result
+ * Send contact form data to Discord webhook
+ * @param {Object} options - Contact form data
+ * @param {string} options.name - Sender name
+ * @param {string} options.email - Sender email
+ * @param {string} options.message - Message content
+ * @returns {Promise} - Promise resolving to the send result
  */
-export const sendEmail = async ({
-  to,
-  subject,
-  html,
-  from = "onboarding@resend.dev",
-}) => {
+export const sendEmail = async ({ name, email, message }) => {
   try {
-    // For development, log the email and return success
-    if (process.env.NODE_ENV === "development") {
-      console.log("Email would be sent in production:");
-      console.log({ from, to, subject, html });
+    const discordMessage = {
+      embeds: [
+        {
+          title: "🔔 New Portfolio Contact",
+          color: 0x00bcd4,
+          fields: [
+            {
+              name: "👤 Name",
+              value: name,
+              inline: true,
+            },
+            {
+              name: "📧 Email",
+              value: email,
+              inline: true,
+            },
+            {
+              name: "💬 Message",
+              value: message,
+              inline: false,
+            },
+          ],
+          timestamp: new Date().toISOString(),
+          footer: {
+            text: "Portfolio Contact Form",
+          },
+        },
+      ],
+    };
 
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      return {
-        success: true,
-        data: { id: "mock-email-id-" + Date.now() },
-        mock: true,
-      };
-    }
-
-    // For production, you would use a serverless function or backend API
-    // Example with a serverless function (you would need to create this)
-    const response = await fetch("/api/send-email", {
+    const response = await fetch(DISCORD_WEBHOOK_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from,
-        to,
-        subject,
-        html,
-      }),
+      body: JSON.stringify(discordMessage),
     });
 
-    const result = await response.json();
-
     if (!response.ok) {
-      throw new Error(result.error || "Failed to send email");
+      throw new Error("Failed to send message");
     }
 
-    return { success: true, data: result };
+    return { success: true };
   } catch (error) {
-    console.error("Exception when sending email:", error);
+    console.error("Error sending to Discord:", error);
     return { success: false, error: error.message };
   }
 };

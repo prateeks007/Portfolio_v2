@@ -22,17 +22,10 @@ const ContactForm = () => {
     setStatus(null);
 
     try {
-      const htmlContent = `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${formData.name}</p>
-        <p><strong>Email:</strong> ${formData.email}</p>
-        <p><strong>Message:</strong> ${formData.message}</p>
-      `;
-
       const result = await sendEmail({
-        to: "prateekshettybdmi@gmail.com", // Your email address
-        subject: `Contact Form: ${formData.name}`,
-        html: htmlContent,
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
       });
 
       if (result.success) {

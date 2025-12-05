@@ -654,7 +654,7 @@ const MainScreen = ({ theme, toggleTheme }) => {
           </FeatureCard>
 
           <FeatureCard
-            onClick={handleBlogClick}
+            onClick={() => window.open("https://hashnode.com/@prateeks007", "_blank")}
             variants={featureCardVariants}
             theme={theme}
           >

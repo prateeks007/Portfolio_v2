@@ -6,10 +6,11 @@ import {
   FaLinkedinIn,
   FaGithub,
   FaMapMarkerAlt,
-  FaArrowRight, // New icon for "send" or "continue"
+  FaArrowRight,
+  FaDiscord,
 } from "react-icons/fa";
-import { FiLoader } from "react-icons/fi"; // For loading spinner
-// import { sendEmail } from "../utils/emailService"; // Keep this commented if not functional
+import { FiLoader } from "react-icons/fi";
+import { sendEmail } from "../utils/emailService";
 
 // --- Master Page Container ---
 const PageContainer = styled(motion.div)`
@@ -439,24 +440,22 @@ const ContactScreen = () => {
       return;
     }
 
-    // --- Simulate API call since `sendEmail` is not functional ---
-    console.log("Simulating email submission:", formData);
     try {
-      // Simulate network delay
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2-second delay
+      const result = await sendEmail({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      });
 
-      // You can toggle these to simulate success or failure during development
-      const simulateSuccess = true; // Set to false to simulate an error
-
-      if (simulateSuccess) {
+      if (result.success) {
         setIsSubmitted(true);
-        setFormData({ name: "", email: "", message: "" }); // Clear form on success
+        setFormData({ name: "", email: "", message: "" });
       } else {
-        throw new Error("Simulated network error or server issue.");
+        setError("Failed to send message. Please try again later.");
       }
     } catch (err) {
       setError("Failed to send message. Please try again later.");
-      console.error("Error simulating email send:", err);
+      console.error("Error sending message:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -526,7 +525,7 @@ const ContactScreen = () => {
           <MainHeader>Let's Build Something Great!</MainHeader>
           <Subheader>
             I'm always excited to discuss new projects, creative ideas, or
-            opportunities to be part of your vision. Feel free to send me a message!
+            opportunities to be part of your vision. Your message will be sent directly to my Discord!
           </Subheader>
         </HeaderSection>
 
@@ -655,11 +654,11 @@ const ContactScreen = () => {
                   >
                     <FiLoader />
                   </motion.div>
-                  Sending...
+                  Sending to Discord...
                 </>
               ) : (
                 <>
-                  Send Message <FaArrowRight />
+                  <FaDiscord /> Send via Discord
                 </>
               )}
             </SubmitButton>
@@ -673,7 +672,7 @@ const ContactScreen = () => {
                 <span role="img" aria-label="success">
                   ✅
                 </span>
-                Your message has been sent successfully! I'll get back to you soon.
+                Message sent to Discord! I'll get back to you soon.
               </SuccessMessage>
             )}
 
